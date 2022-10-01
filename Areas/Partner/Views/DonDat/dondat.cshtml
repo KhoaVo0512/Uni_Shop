@@ -1,0 +1,193 @@
+﻿@model IEnumerable<Uni_Shop.Models.ghdd>
+@using Uni_Shop.ModelDBs
+@{
+    ViewData["Title"] = "dondat";
+    Layout = "~/Areas/Partner/Views/Shared/_Layout.cshtml";
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script>
+    async function changeDD(madondat, trangthaiid) {
+        //console.log test du lieu tren f12
+        console.log(trangthaiid);
+        await $.ajax({
+            type: "POST", url: '/Partner/DonDat/EditDD', data: { madondat: madondat, trangthaiid: trangthaiid }, success: function (response) {
+                if (response.success) {
+                }
+            },
+            error: function (reponse) {
+                alert("error!");
+            }
+        });
+        location.reload();
+    }
+</script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="UNI Shop">
+    <meta name="keywords" content="Cửa Hàng Nông Sản UNI">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link href="~/GridShop/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="~/GridShop/css/font-awesome.min.css" rel="stylesheet" />
+
+    @*<link href="~/GridShop/css/elegant-icons.css" rel="stylesheet" />*@
+
+    @*<link href="~/GridShop/css/nice-select.css" rel="stylesheet" />*@
+
+    @*<link href="~/GridShop/css/jquery-ui.min.css" rel="stylesheet" />*@
+    @*<link href="~/GridShop/css/owl.carousel.min.css" rel="stylesheet" />*@
+    @*<link href="~/GridShop/css/slicknav.min.css" rel="stylesheet" />*@
+    <link href="~/Partner/css/style.css" rel="stylesheet" />
+    @*<link href="~/GridShop/css/style.css" rel="stylesheet" />*@
+</head>
+<body>
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+    <div class="container">
+        @*<div class="container-fluid">
+                <nav class="navbar-expand-lg navbar-light bg-light">
+                    <a class="badge bg-primary" asp-action="Index" asp-controller="Home" asp-area="DoiTac">Trang Chủ</a>
+                    <a class="badge bg-primary" asp-action="dondat" asp-controller="DonDat" asp-area="DoiTac"> Danh Sách Đơn Đặt</a>
+                    <a class="badge bg-primary" asp-action="Create" asp-controller="Home" asp-area="DoiTac">Nông Sản Mới</a>
+                </nav>
+            </div>*@
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-4">
+                    <a asp-action="gianhang" asp-controller="Home" asp-area="Partner">
+                        <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
+                        Trở Về
+                    </a>
+                </div>
+            </div><!--Điều hướng-->
+        </div>
+        <table class="table table-striped table-bordered zero-configuration dataTable" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+            <thead>
+                <tr>
+                    <th>
+                        STT
+                    </th>
+                    <th>
+                        Mã đơn đặt
+                    </th>
+                   
+                    <th>
+                        Ngày đặt hàng
+                    </th>
+                    <th>
+                        Trạng thái
+                    </th>
+                    <th>
+                        Người đặt
+                    </th>
+                </tr>
+            </thead>
+            @if(ViewBag.temp == 1)
+            {
+                var i = 1;
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td align="center">
+                            <!--STT-->
+                            @i
+                            @{ i++;}
+                        </td>
+                        <td>
+                            @item.dondatdetail.MaDonDat
+
+                        </td>
+                        
+                        <td>
+                            @item.dondatdetail.NgayDatHang
+                        </td>
+                        <td>
+                            <select asp-for=" @item.dondatdetail.Ma_Trang_Thai" value="@item.dondatdetail.Ma_Trang_Thai" id="@item.dondatdetail.Ma_Trang_Thai" name="@item.dondatdetail.Ma_Trang_Thai" asp-items="ViewBag.Compani" onchange="changeDD(@item.dondatdetail.MaDonDat, value)"></select>
+                            <span asp-validation-for="@item.dondatdetail.Ma_Trang_Thai"></span>
+                        </td>
+                        <td>
+                            <select asp-for=" @item.dondatdetail.MaNguoiDung" asp-items="ViewBag.temp4" disabled="disabled"></select>
+                            <span asp-validation-for="@item.dondatdetail.MaNguoiDung"></span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            }
+
+        </table>
+    </div>
+    <div class="container">
+        @if (pager.TotalPages > 0)
+        {
+            <ul class="pagination justify-content-center">
+                @if (pager.CurrentPage > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-area="Partner" asp-controller="DonDat" asp-action="dondat" asp-route-pg="1">Đầu</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" asp-area="Partner" asp-controller="DonDat" asp-action="dondat" asp-route-pg="@(pager.CurrentPage - 1)">Trước</a>
+                    </li>
+                }
+                @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                {
+                    <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
+                        <a class="page-link" asp-area="Partner" asp-controller="DonDat" asp-action="dondat" asp-route-pg="@pge">@pge</a>
+                    </li>
+                }
+                @if (pager.CurrentPage < pager.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-area="Partner" asp-controller="DonDat" asp-action="dondat" asp-route-pg="@(pager.CurrentPage +1)">Sau</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" asp-area="Partner" asp-controller="DonDat" asp-action="dondat" asp-route-pg="@(pager.TotalPages)">Cuối</a>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+    <script src="~/Partner/plugins/common/common.min.js"></script>
+    <script src="~/Partner/js/custom.min.js"></script>
+    <script src="~/Partner/js/settings.js"></script>
+    <script src="~/Partner/js/gleek.js"></script>
+    <script src="~/Partner/js/styleSwitcher.js"></script>
+
+    <script src="~/Partner/plugins/tables/js/jquery.dataTables.min.js"></script>
+    <script src="~/Partner/plugins/tables/js/datatable/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Partner/plugins/tables/js/datatable-init/datatable-basic.min.js"></script>
+
+
+    <script src="~/GridShop/js/jquery-3.3.1.min.js"></script>
+
+    <script src="~/GridShop/js/bootstrap.min.js"></script>
+
+    <script src="~/GridShop/js/jquery.nice-select.min.js"></script>
+
+    @*<script src="~/GridShop/js/jquery-ui.min.js"></script>*@
+
+    @*<script src="~/GridShop/js/jquery.slicknav.js"></script>*@
+
+    @*<script src="~/GridShop/js/mixitup.min.js"></script>*@
+
+    @*<script src="~/GridShop/js/owl.carousel.min.js"></script>*@
+
+    <script src="~/GridShop/js/main.js"></script>
+
+</body>

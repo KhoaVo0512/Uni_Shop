@@ -1,0 +1,39 @@
+﻿
+@model IEnumerable<Uni_Shop.ModelDBs.LoaiNongSan>
+<script>
+    async function Show(maloai) {
+        await $.ajax({
+            type: 'POST', url: 'list/{maloai}', data: { maloai: maloai }, success: function (response) {
+                $("#res").html(response);
+            },
+            error: function (response) {
+                alert("error!");  //
+            }
+        });
+
+    }
+
+</script>
+<div className="container">
+    <div className="row justify-content-start ">
+        <div className="col-lg-3 col-md-6 col-12  mt-4 ">
+            <h5>Danh mục nông sản</h5>
+            <nav aria-label="main mailbox folders">
+                <Divider style="display:flex;flex-direction:row;justify-content:space-between;font-size:medium" />
+
+                @foreach (var item in Model)
+                {
+                    <button style="padding-top:10pt; padding-bottom:10pt">
+                        <a onclick="Show(@Html.DisplayFor(modelItem => item.MaLoaiNongSan))"> @Html.DisplayFor(modelItem => item.TenLoaiNongSan)</a>
+                    </button>
+           
+
+                }
+                <Divider />
+            </nav>
+        </div>
+        <div className="col-lg-9 col-md-6 col-12 ">
+            <div id="res"></div>
+        </div>
+    </div>
+</div>

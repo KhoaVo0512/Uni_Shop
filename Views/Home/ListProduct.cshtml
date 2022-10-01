@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Uni_Shop.ModelDBs.NongSan>
+
+@{
+    ViewData["Title"] = "ListProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>ListProduct</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MaNongSan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaLoaiNongSan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaGianHang)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaDonViTinh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TenNongSan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TrongLuong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SoLuong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MoTa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gia)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaNongSan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaLoaiNongSan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaGianHang)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaDonViTinh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenNongSan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrongLuong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoLuong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MoTa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gia)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

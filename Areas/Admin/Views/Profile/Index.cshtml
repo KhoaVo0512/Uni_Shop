@@ -1,0 +1,76 @@
+﻿@model Uni_Shop.ModelDBs.NhanVien
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="pagetitle">
+    <h1 style="color: black;">Trang cá nhân Admin</h1>
+</div><!-- End Page Title -->
+
+<section class="section profile">
+
+    <div class="row">
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                    <img src="~/Admin/assets/img/admin/@TempData["data"]" alt="Profile" class="rounded-circle">
+                    <h2>@Html.DisplayFor(Model => Model.TenNhanVien)</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-8">
+
+            <div class="card">
+                <div class="card-body pt-3">
+                    <!-- Bordered Tabs -->
+                    <ul class="nav nav-tabs nav-tabs-bordered">
+
+                        <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Thông tin chung</button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">@Html.ActionLink( "Cập nhật", "CapNhat", new { id = Model.MaNhanVien }, new { @style = "font-weight: unset; color: blue;" })</button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">@Html.ActionLink("Đổi mật khẩu", "ChangePassword", new { id = Model.MaNhanVien }, new { @style = "font-weight: unset; color: blue;" })</button>
+                        </li>
+
+                    </ul>
+                    <div class="tab-content pt-2">
+
+                        <div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+                            <h5 class="card-title text-center">Thông tin Admin</h5>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label ">Mã nhân viên</div>
+                                <div class="col-lg-9 col-md-8">@Html.DisplayFor(Model => Model.MaNhanVien)</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label ">Họ tên</div>
+                                <div class="col-lg-9 col-md-8">@Html.DisplayFor(Model => Model.TenNhanVien)</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Địa chỉ</div>
+                                <div class="col-lg-9 col-md-8">@Html.DisplayFor(Model => Model.DiaChi)</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">SĐT</div>
+                                <div class="col-lg-9 col-md-8">@Html.DisplayFor(Model => Model.Sdt)</div>
+                            </div>
+
+                        </div>
+                    </div><!-- End Bordered Tabs -->
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

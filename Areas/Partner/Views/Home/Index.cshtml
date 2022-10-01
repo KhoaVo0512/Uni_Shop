@@ -1,0 +1,108 @@
+﻿@model IEnumerable<Uni_Shop.Models.NongSanChiTiet>
+
+@using Uni_Shop.ModelDBs
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Partner/Views/Shared/_Layout.cshtml";
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+}
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+    </script>
+}
+<nav class="navbar-expand-md navbar-light bg-dark-light" style="padding:3pt">
+    <div class="container">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <a class="badge bg-primary w-20 p-md-2" style="margin-left:15px;font-size:24px" asp-action="Index" asp-controller="Home" asp-area="Partner">Trang Chủ</a>
+                <a class="badge bg-primary w-20 p-md-2" style="margin-left: 15px; font-size: 24px" asp-action="gianhang" asp-controller="Home" asp-area="Partner">Gian Hàng Cá Nhân</a>
+          
+            </div>
+        </div>
+    </div>
+</nav>
+<div>
+    <div class="album bg-light">
+        <div class="container" style="padding:10px">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                @foreach (var item in Model)
+                {
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            @*<img src="@item.anhnsdetail.LinkAnh" class="bd-placeholder-img card-img-top" width="100%" height="225" />*@
+                            <img src="@Url.Content("~/Myfiles/" + item.anhnsdetail.LinkAnh)" width="100%" height="225" /> <!--Để Ảnh ở đây-->
+                            <div class="card-body">
+                                <h4>@item.nongsandetail.TenNongSan</h4>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">Trọng lượng: @item.nongsandetail.TrongLuong @item.donvitinhdetail.TenDonViTinh</small>
+                                    <p class="text-danger fw-bold">@item.nongsandetail.Gia VNĐ</p>
+                                </div>
+                                <p class="card-text"> @item.nongsandetail.MoTa</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    @section Scripts {
+        <script>
+          $(document).ready(function () {
+              $(".AddToCart").click(function (event) {
+                  alert("add");
+                  event.preventDefault();
+                  var MaNongSan = $(this).attr("data-productid");
+                  $.ajax({
+                      type: "POST",
+                      url:"@Url.RouteUrl("addcart")",
+                      data: {
+                          productid: MaNongSan
+                      },success: function (result) {
+                      }
+                  });
+              });
+          });
+        </script>
+    }
+</div>
+<div class="container">
+    @if (pager.TotalPages > 0)
+    {
+        <ul class="pagination justify-content-center">
+            @if (pager.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-area="Partner" asp-controller="Home" asp-action="Index" asp-route-pg="1">Đầu</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" asp-area="Partner" asp-controller="Home" asp-action="Index" asp-route-pg="@(pager.CurrentPage - 1)">Trước</a>
+                </li>
+            }
+            @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+            {
+                <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-area="Partner" asp-controller="Home" asp-action="Index" asp-route-pg="@pge">@pge</a>
+                </li>
+            }
+            @if (pager.CurrentPage < pager.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-area="Partner" asp-controller="Home" asp-action="Index" asp-route-pg="@(pager.CurrentPage +1)">Sau</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" asp-area="Partner" asp-controller="Home" asp-action="Index" asp-route-pg="@(pager.TotalPages)">Cuối</a>
+                </li>
+            }
+        </ul>
+    }
+ </div>

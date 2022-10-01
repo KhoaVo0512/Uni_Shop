@@ -1,0 +1,100 @@
+﻿@model IEnumerable<Uni_Shop.Models.NongSanContent>
+@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Uni-Shop";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+    </script>
+}
+<div class="container col-xxl-8 px-4">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+        <div class="col-10 col-sm-8 col-lg-6">
+            <img src="~/images/herroes.png" class="d-block mx-md-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+        </div>
+        <div class="col-lg-6">
+            <h1 class="display-5 fw-bold lh-1 mb-3">Thực phẩm Organic 100% tự nhiên</h1>
+            <p class="lead">Với sứ mệnh mang đến sự tin tưởng nơi khách hàng, Uni Shop cam kết là cầu nối đưa các nhà vườn tiếp cận, nắm bắt từng nhu cầu và quan tâm trải nghiệm của khách hàng. Đến với Uni Shop, bạn có thể an tâm lựa chọn những sản phẩm XANH - SẠCH - RẺ. Bạn còn ngần ngại gì mà không thử tham gia cùng chúng tôi. Gét gooooooooo !!!!</p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                <a asp-action="List" asp-controller="Home" class="button-main px-4 me-md-2">Xem nông sản</a>
+                @if (@Context.Session.GetString("username") == null)
+                {
+
+
+                    <a href="/login" class="button-main button-sub btn-lg px-4">Đăng nhập</a>
+                }
+                else
+                {
+            <a href="/cart" class="button-main button-sub btn-lg px-4">Thanh toán</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+
+    <section class="py-2 text-center container">
+        <div class="row">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Nông sản nhà Uni</h1>
+                <p class="lead text-muted">Từ nhiều nhà vườn trên khắp dãy đất Việt Nam với hàng trăm loại nông sản với chất lượng tốt nhất và giá cả ưu đãi. Sẽ thật tuyệt vời nếu được bạn quan tâm và mua sắm...</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="album bg-light">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
+                @foreach (var item in Model)
+                {
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img src="@Url.Content("~/Myfiles/" + item.anhnongsandeltail.LinkAnh)" class="bd-placeholder-img card-img-top" width="100%" height="225" /> <!--Để Ảnh ở đây-->
+                            <div class="card-body">
+                                <h4>@item.nongsandetail.TenNongSan</h4>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">Trọng lượng: @item.nongsandetail.TrongLuong @item.donvitinhdetail.TenDonViTinh</small>
+                                    <p class="text-danger fw-bold">@item.nongsandetail.Gia VNĐ</p>
+                                </div>
+                                <p class="card-text"> @item.nongsandetail.MoTa</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <a asp-route="addcart" asp-route-productid="@item.nongsandetail.MaNongSan" class="btn btn-sm btn-danger mx-1 ">Thêm giỏ hàng</a>
+                                    <a href="/cart" class="btn btn-sm btn-outline-dark">Mua ngay</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+
+    </div>
+    @section Scripts {
+        <script>
+          $(document).ready(function () {
+              $(".AddToCart").click(function (event) {
+                  alert("add");
+                  event.preventDefault();
+                  var MaNongSan = $(this).attr("data-productid");
+                  $.ajax({
+                      type: "POST",
+                      url:"@Url.RouteUrl("addcart")",
+                      data: {
+                          productid: MaNongSan
+                      },success: function (result) {
+                      }
+                  });
+              });
+          });
+        </script>
+    }
+</div>
+

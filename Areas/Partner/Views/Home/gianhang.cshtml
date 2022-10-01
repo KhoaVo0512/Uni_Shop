@@ -1,0 +1,196 @@
+﻿@model IEnumerable<Uni_Shop.Models.NongSanContentP>
+@using Uni_Shop.ModelDBs
+@{
+    ViewData["Title"] = "gianhang";
+    Layout = "~/Areas/Partner/Views/Shared/_Layout.cshtml";
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+}
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script>
+    async function changeGH(magianhang, tengianhang) {
+        //console.log test du lieu tren f12
+        console.log(tengianhang);
+        await $.ajax({
+            type: "POST", url: '/Partner/Home/EditGH', data: { magianhang: magianhang, tengianhang: tengianhang }, success: function (response) {
+                if (response.success) {
+                }
+            },
+            error: function (reponse) {
+                alert("error!");
+            }
+        });
+        alert("Cập nhật tên gian hàng thành công!")
+        location.reload();
+    }
+</script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="UNI Shop">
+    <meta name="keywords" content="Cửa Hàng Nông Sản UNI">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link href="~/GridShop/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="~/GridShop/css/font-awesome.min.css" rel="stylesheet" />
+
+    <link href="~/GridShop/css/elegant-icons.css" rel="stylesheet" />
+
+    <link href="~/GridShop/css/nice-select.css" rel="stylesheet" />
+
+    <link href="~/GridShop/css/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/GridShop/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/GridShop/css/slicknav.min.css" rel="stylesheet" />
+    <link href="~/GridShop/css/style.css" rel="stylesheet" />
+</head>
+
+
+
+<body>
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <nav class="navbar-expand-md navbar-light bg-light" style="padding:3pt">
+        <div class="container">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <a class="btn btn-primary p-2 mr-4" asp-action="Index" asp-controller="Home" asp-area="Partner">Trang Chủ</a>
+                    <a class="btn btn-primary p-2 mr-4" asp-action="dondat" asp-controller="DonDat" asp-area="Partner"> Danh Sách Đơn Đặt</a>
+                    <a class="btn btn-primary p-2 mr-4" asp-action="Create" asp-controller="Home" asp-area="Partner">Nông Sản Mới</a>
+                    <a class="btn btn-primary p-2 mr-4" asp-action="gianhang" asp-controller="Home" asp-area="Partner">Gian Hàng Cá Nhân</a>
+
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <div class="d-flex justify-content-center" style="margin-top:30px;">
+        <h2>Gian Hàng:</h2>
+        <span class="badge bg-primary text-dark p-2 ml-5">
+            @foreach (var item in Model)
+            {
+                <a>
+                    @item.gianhangdetail.TenGianHang
+                    <input value="@item.gianhangdetail.TenGianHang" asp-for="@item.gianhangdetail.TenGianHang" id="@item.gianhangdetail.TenGianHang" name="@item.gianhangdetail.TenGianHang" onchange="changeGH(@item.gianhangdetail.MaGianHang, value)" />
+                </a>
+                <button><i class="fa fa-edit"></i> Edit</button>
+                break;
+            }
+
+
+        </span>
+    </div>
+    @if (ViewBag.temp == 1)
+    {
+        <section class="product spad">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-md-7">
+                        <div class="row">
+                            <!--Dòng foreach duyệt item trong Model-->
+                            @foreach (var item in Model)
+                            {
+                                <div class="col-lg-4 col-md-6 col-sm-6 ">
+                                    <div class="product__item">
+                                        <div class="product__item__pic set-bg">
+                                            <img src="@Url.Content("~/Myfiles/" + item.anhdetail.LinkAnh)" width="350px" height="350px" /> <!--Để Ảnh ở đây--> <!--Để Ảnh ở đây-->
+                                            <ul class="product__item__pic__hover">
+                                                <li>
+                                                    <a asp-action="Delete" asp-area="Partner" asp-controller="Home" asp-route-id="@item.nongsandetail.MaNongSan">
+                                                        <i class="fa fa-remove"></i>
+                                                    </a><!--Action Delete ở đây-->
+                                                </li>
+                                                <li>
+                                                    <a asp-action="EditImage" asp-area="Partner" asp-controller="Home" asp-route-id="@item.anhdetail.MaAnh"><i class="fa fa-info-circle"></i></a> <!--Chi tiet nong san-->
+                                                </li>
+                                                <li>
+                                                    <a asp-action="NongSanChiTietDoiTac1" asp-controller="NongSanChiTiet" asp-area="Partner" asp-route-id="@item.nongsandetail.MaNongSan">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a> <!--Chinh sửa nông sản-->
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="product__item__text">
+                                            <h6><a href="#"> @item.nongsandetail.TenNongSan</a></h6> <!--Click vào thì ra trang Detail-->
+                                            <h5>Giá:  @item.nongsandetail.Gia VND</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="container">
+            @if (pager.TotalPages > 0)
+            {
+                <ul class="pagination justify-content-center">
+                    @if (pager.CurrentPage > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-area="Partner" asp-controller="Home" asp-action="gianhang" asp-route-pg="1">Đầu</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" asp-area="Partner" asp-controller="Home" asp-action="gianhang" asp-route-pg="@(pager.CurrentPage - 1)">Trước</a>
+                        </li>
+                    }
+                    @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                    {
+                        <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
+                            <a class="page-link" asp-area="Partner" asp-controller="Home" asp-action="gianhang" asp-route-pg="@pge">@pge</a>
+                        </li>
+                    }
+                    @if (pager.CurrentPage < pager.TotalPages)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-area="Partner" asp-controller="Home" asp-action="gianhang" asp-route-pg="@(pager.CurrentPage +1)">Sau</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" asp-area="Partner" asp-controller="Home" asp-action="gianhang" asp-route-pg="@(pager.TotalPages)">Cuối</a>
+                        </li>
+                    }
+                </ul>
+            }
+
+        </div>
+    }
+
+
+
+
+    @*<div aria-label="Page">
+        <ul class="pagination">
+        <pager class="pager-container" list="@Model" asp-action="Index" asp-controller="Home" asp-route-query="@Model" />
+        </ul>
+        </div>*@
+    <script src="~/GridShop/js/jquery-3.3.1.min.js"></script>
+
+    <script src="~/GridShop/js/bootstrap.min.js"></script>
+
+    <script src="~/GridShop/js/jquery.nice-select.min.js"></script>
+
+    <script src="~/GridShop/js/jquery-ui.min.js"></script>
+
+    <script src="~/GridShop/js/jquery.slicknav.js"></script>
+
+    <script src="~/GridShop/js/mixitup.min.js"></script>
+
+    <script src="~/GridShop/js/owl.carousel.min.js"></script>
+
+    <script src="~/GridShop/js/main.js"></script>
+
+</body>
+

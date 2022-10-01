@@ -1,0 +1,85 @@
+﻿.bg-main {
+    background: rgb(115,55,175);
+    background: linear-gradient(265deg, rgba(115,55,175,1) 0%, rgba(0,212,255,1) 100%);
+    color: #fff;
+}
+.nav-link:hover, .active a {
+    color: #fff !important;
+}
+.text-white {
+    color: rgba(255,255,255,.7) !important;
+}
+.text-white:hover{
+    color:#fff !important;
+}
+.bg-login-image {
+    background: url("https://dalatfarm.net/wp-content/uploads/2021/04/dau-tay-new-zealand-hcm-1.jpg");
+    background-position: center;
+    background-size: cover;
+}
+.bg-register-image {
+    background: url("https://images.pexels.com/photos/1092730/pexels-photo-1092730.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+    background-position: center;
+    background-size: cover;
+}
+
+.bg-password-image {
+    background: url("~/images/login.png");
+    background-position: center;
+    background-size: cover;
+    width:600px;
+    height:800px;
+}
+.button-29, .button-main {
+    align-items: center;
+    appearance: none;
+    background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
+    border: 0;
+    border-radius: 6px;
+    box-shadow: rgba(45, 35, 66, .4) 0 2px 4px,rgba(45, 35, 66, .3) 0 7px 13px -3px,rgba(58, 65, 111, .5) 0 -3px 0 inset;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    height: 48px;
+    justify-content: center;
+    line-height: 1;
+    list-style: none;
+    overflow: hidden;
+    padding-left: 16px;
+    padding-right: 16px;
+    position: relative;
+    text-align: left;
+    text-decoration: none;
+    transition: box-shadow .15s,transform .15s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    will-change: box-shadow,transform;
+    font-size: 18px;
+}
+.button-29 {
+    width: 60%;
+}
+    .button-29:focus, .button-main:focus {
+        box-shadow: #3c4fe0 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+    }
+
+    .button-29:hover, .button-main:hover {
+        box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+        transform: translateY(-2px);
+    }
+
+    .button-29:active, .button-main:active {
+        box-shadow: #3c4fe0 0 3px 7px inset;
+        transform: translateY(2px);
+    }
+    .button-sub{
+        background-color:#fff;
+        background-image:none;
+        color:#000;
+    }
+        .button-sub:hover {
+            box-shadow: rgba(0, 0, 0, 0.4) 0 4px 8px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+        }

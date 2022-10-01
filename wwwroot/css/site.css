@@ -1,0 +1,38 @@
+﻿a{
+    color:rgba(0,0,0,.55);
+    text-decoration:none;
+    font-size:1rem;
+}
+    a:hover {
+        color: #000;
+        text-decoration: none;
+    }
+li{
+    list-style: none !important;
+}
+.alert-error {
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+    padding:1rem 5px;
+}
+.field-validation-error {
+    color: #e80c4d;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #e80c4d;
+}
+
+.validation-summary-errors {
+    color: #e80c4d;
+    font-size: 1.1em;
+}
+
+.validation-summary-valid {
+    display: none;
+} 

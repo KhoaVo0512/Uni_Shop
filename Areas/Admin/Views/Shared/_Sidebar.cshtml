@@ -1,0 +1,73 @@
+﻿
+<ul class="sidebar-nav" id="sidebar-nav">
+
+    <li class="nav-item">
+        <a class="nav-link " asp-area="Admin" asp-controller="Home" asp-action="Index">
+            <i class="bi bi-grid"></i>
+            <span>Admin</span>
+        </a>
+    </li><!-- End Admin Nav -->
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+            <i class='bx bx-group'></i><span>Quản lý người dùng</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+                <a asp-controller="DoiTac" asp-action="XetDuyetDT">
+                    <i class='bx bx-user-check'></i><span>Xét duyệt đối tác</span>
+                </a>
+            </li>
+            <li>
+                <a  asp-controller="DoiTac" asp-action="Index">
+                    <i class='bx bx-user'></i><span>Danh sách đối tác</span>
+                </a>
+            </li>
+            <li>
+                <a  asp-area="Admin" asp-controller="NguoiDung" asp-action="Index">
+                    <i class='bx bx-user'></i><span>Danh sách người dùng</span>
+                </a>
+            </li>
+        </ul>
+    </li><!-- End QLND Nav -->
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+            <i class='bx bx-basket'></i><span>Quản lý sản phẩm</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+                <a asp-area="Admin" asp-controller="LoaiNongSan" asp-action="Index">
+                    <i class='bx bx-lemon'></i><span>Quản lý loại nông sản</span>
+                </a>
+            </li>
+        </ul>
+    </li><!-- End QLSP Nav -->
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+            <i class='bx bx-paperclip'></i><span>Quản lý đơn vị tính</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+                <a asp-area="Admin" asp-controller="DonViTinh" asp-action="Index">
+                    <i class='bx bx-spreadsheet'></i><span>Danh sách đơn vị tính</span>
+                </a>
+            </li>
+        </ul>
+    </li><!-- End ĐVT Nav -->
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+            <i class='bx bx-bar-chart-alt-2'></i><span>Thống kê</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+                <a asp-action="Index" asp-controller="HoaDon" asp-area="Admin">
+                    <i class='bx bx-receipt'></i><span>Thống kê hóa đơn</span>
+                </a>
+            </li>
+        </ul>
+    </li><!-- End Charts Nav -->
+
+</ul>

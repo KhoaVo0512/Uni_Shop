@@ -1,0 +1,73 @@
+﻿@model Uni_Shop.ModelDBs.NguoiDung
+
+@{
+    ViewData["Title"] = "Cập nhật thông tin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+        <div class="col-xl-10 col-lg-12 col-md-9">
+
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <!-- Nested Row within Card Body -->
+                    <form method="POST" enctype="multipart/form-data" asp-route="profile" class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group my-5">
+                                @if (Model.Avatar != null)
+                                {
+                                    <img src="@Url.Content("~/images/Users/" + Model.Avatar)" style=" height: 400px; object-fit: cover; width: 80%; margin-left: 10%; overflow: hidden" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/Users/user.png" style=" height: 400px; object-fit: cover; width: 80%; margin-left: 10%; overflow: hidden" />
+                                }
+                                <input class="custom-file-input" type="file" name="myfile" asp-for="Avatar" style=" height: 400px; object-fit: cover; width: 80%; margin-left: 10%; overflow: hidden" class="form-control" />
+                                <span asp-validation-for="Avatar" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-2">Cập nhật thông tin</h1>
+                                    <p class=" text-gray-900 mb-4">Cập nhật thông tin cá nhân của bạn nhé</p>
+                                </div>
+                                <div>
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                                    <div class="form-group">
+                                        <label asp-for="TenNguoiDung" class="control-label my-1">Họ và Tên:</label>
+                                        <input asp-for="TenNguoiDung" class="form-control" required />
+                                        <span asp-validation-for="TenNguoiDung" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group my-3">
+                                        <label asp-for="DiaChi" class="control-label my-1">Địa chỉ: </label>
+                                        <input asp-for="DiaChi" class="form-control" required />
+                                        <span asp-validation-for="DiaChi" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group my-3">
+                                        <label asp-for="Sdt" class="control-label">Số điện thoại: </label>
+                                        <input asp-for="Sdt" class="form-control" required />
+                                        <span asp-validation-for="Sdt" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group my-3">
+                                        <button class="button-29" type="submit" role="button">Xác nhận</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+

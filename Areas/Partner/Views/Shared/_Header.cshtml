@@ -1,0 +1,139 @@
+﻿@using Microsoft.AspNetCore.Http;
+<style>
+    .dropdown-submenu {
+        position: relative;
+    }
+
+        .dropdown-submenu .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: -1px;
+        }
+</style>
+
+<div class="bg-main">
+    <nav class="container navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid justify-content-between">
+            <!-- Left elements -->
+            <div class="d-flex">
+                <!-- Brand -->
+                <a class="navbar-brand me-2 mb-1 d-flex align-items-center" href="#">
+                    <img src="/images/logo.png"
+                         height="50"
+                         alt="MDB Logo"
+                         loading="lazy"
+                         style="margin-top: 2px;" />
+                </a>
+
+                <!-- Search form -->
+                <form class="input-group w-auto my-auto d-none d-sm-flex">
+                    <input autocomplete="off"
+                           type="search"
+                           class="form-control rounded"
+                           placeholder="Search"
+                           style="min-width: 125px;" />
+                    <span class="input-group-text border-0 d-none d-lg-flex">
+                        <i class="fas fa-search"></i>
+                    </span>
+                </form>
+            </div>
+            <!-- Left elements -->
+
+            <!-- Center elements -->
+            <ul class="navbar-nav flex-row d-none d-md-flex">
+                <li class="nav-item me-3 me-lg-1 active">
+                    <a class="nav-link" href="/">
+                        <span>Trang chủ</span>
+                    </a>
+                </li>
+                @* Category *@
+                <li class="nav-item dropdown me-3 me-lg-1">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Danh mục
+                    </a>
+                    <ul class="dropdown-menu " aria-labelledby="navbarDarkDropdownMenuLink">
+                        <li><a class="dropdown-item" href="#">Rau xanh</a></li>
+                        <li><a class="dropdown-item" href="#">Các loại củ và hạt</a></li>
+                        <li><a class="dropdown-item" href="#">Trái cây ăn quả</a></li>
+                        <li><a class="dropdown-item" href="#">Đồ khô</a></li>
+                        <li><a class="dropdown-item" href="#">Lương thực</a></li>
+                    </ul>
+                </li>
+                @* Services *@
+                <li class="nav-item dropdown me-3 me-lg-1">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Dịch vụ
+                    </a>
+                    <ul class="dropdown-menu " aria-labelledby="navbarDarkDropdownMenuLink">
+                        <li><a class="dropdown-item" href="#">Về chúng tôi</a></li>
+                        <li><a class="dropdown-item" href="#">Gửi feedback</a></li>
+                        <li><a class="dropdown-item" href="#">Báo cáo</a></li>
+                        <li><a class="dropdown-item" href="#">Trở thành đối tác</a></li>
+                        <li><a class="dropdown-item" href="#">Hỗ trợ </a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown me-3 me-lg-1">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Đối tác
+                    </a>
+                    <ul class="dropdown-menu " aria-labelledby="navbarDarkDropdownMenuLink">
+                        <li><a class="dropdown-item" asp-action="Index" asp-area="Partner" asp-controller="Home">Trang chủ</a></li>
+                        <li><a class="dropdown-item" asp-action="dondat" asp-area="Partner" asp-controller="DonDat">Danh sách đơn đặt</a></li>
+                        <li><a class="dropdown-item" asp-action="Create" asp-area="Partner" asp-controller="Home">Thêm nông sản</a></li>
+                        <li><a class="dropdown-item" asp-action="gianhang" asp-area="Partner" asp-controller="Home">Gian hàng cá nhân</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- Center elements -->
+            <!-- Right elements -->
+            <ul class="navbar-nav flex-row">
+                @* Cart *@
+                <li class="nav-item me-3 me-lg-1">
+                    <a class="nav-link" href="/cart">
+                        <span><i class="fas fa-shopping-bag fa-lg"></i></span>
+                        <span class="badge rounded-pill badge-notification bg-danger">1</span>
+                    </a>
+                </li>
+                @* Account *@
+                <li class="nav-item me-3 me-lg-1">
+                    <a class="nav-link d-sm-flex align-items-sm-center" href="#">
+                        <img src="https://mdbcdn.b-cdn.net/img/new/avatars/1.webp"
+                             class="rounded-circle"
+                             height="22"
+                             alt="Black and White Portrait of a Man"
+                             loading="lazy" />
+                        @if (@Context.Session.GetString("username") != null)
+                        {
+                            <strong class="d-none d-sm-block ms-1">@Context.Session.GetString("username")</strong>
+                        }
+                        else
+                        {
+                            <strong class="d-none d-sm-block ms-1">Guest</strong>
+                        }
+
+                    </a>
+                </li>
+                <li class="nav-item dropdown me-3 me-lg-1 ">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-plus-circle fa-lg"></i>
+                    </a>
+                    <ul class="dropdown-menu " aria-labelledby="navbarDarkDropdownMenuLink">
+                        @if (@Context.Session.GetString("username") == null)
+                        {
+                            <li><a class="dropdown-item" href="/login">Đăng nhập</a></li>
+                            <li><a class="dropdown-item" href="/register">Đăng ký</a></li>
+                        }
+                        else
+                        {
+                            <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
+                            <li><a class="dropdown-item" href="/Logout">Đăng xuất</a></li>
+                        }
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Right elements -->
+        </div>
+    </nav>
+</div>

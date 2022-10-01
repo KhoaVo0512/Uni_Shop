@@ -1,0 +1,185 @@
+﻿@model Uni_Shop.Models.CreateImg
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Partner/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="~/Partner/images/favicon.png">
+    <!-- Custom Stylesheet -->
+    <link href="~/Partner/css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+
+
+
+    <div class="main-wrapper">
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+            @*<div class="row page-titles mx-0">
+                    <div class="col p-md-0">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a asp-action="Index">Trở Về</a></li>
+                            <li class="breadcrumb-item active"><a asp-action="Create">Thêm Nông Sản</a></li>
+                        </ol>
+                    </div>
+                </div>*@
+
+
+
+            <!-- row -->
+            <div class="container-fluid">
+
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <a asp-action="gianhang" asp-controller="Home" asp-area="Partner">
+                                        <i class="fa fa-home"></i> Gian Hàng Cá Nhân
+                                    </a> |
+                                    <a asp-action="Index" asp-controller="Home" asp-area="Partner">
+                                        <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
+                                        Trở Về
+                                    </a>
+                                </div>
+                            </div><!--Điều hướng-->
+                            <h4 class="card-title" align="center">Thêm Nông Sản</h4>
+                            <br />
+                            <div class="basic-form">
+                                <form asp-action="CreateUploadFile" enctype="multipart/form-data">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <div class="form-row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label asp-for="nongsandetail.MaLoaiNongSan" class="control-label">Loại Nông Sản</label>
+                                                <select asp-for="nongsandetail.MaLoaiNongSan" class="form-control" asp-items="ViewBag.temp1"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label asp-for="gianhangdetail.MaGianHang" class="control-label">Gian Hàng</label>
+                                                <select asp-for="gianhangdetail.MaGianHang" class="form-control" asp-items="ViewBag.temp3"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label asp-for="donvitinhdetail.MaDonViTinh" class="control-label">Đơn Vị Tính</label>
+                                                <select asp-for="donvitinhdetail.MaDonViTinh" class="form-control" asp-items="ViewBag.temp2"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label asp-for="nongsandetail.TenNongSan" class="control-label">Tên Nông Sản</label>
+                                                <input asp-for="nongsandetail.TenNongSan" class="form-control" required />
+                                                <span asp-validation-for="nongsandetail.TenNongSan" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label asp-for="nongsandetail.TrongLuong" class="control-label">Trọng Lượng</label>
+                                                <input asp-for="nongsandetail.TrongLuong" class="form-control" required />
+                                                <span asp-validation-for="nongsandetail.TrongLuong" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label asp-for="nongsandetail.SoLuong" class="control-label">Số Lượng</label>
+                                                <input asp-for="nongsandetail.SoLuong" class="form-control" required />
+                                                <span asp-validation-for="nongsandetail.SoLuong" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label asp-for="nongsandetail.Gia" class="control-label">Giá Bán</label>
+                                                <input asp-for="nongsandetail.Gia" class="form-control" required />
+                                                <span asp-validation-for="nongsandetail.Gia" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label asp-for="nongsandetail.MoTa" class="control-label">Mô Tả</label>
+                                                <input asp-for="nongsandetail.MoTa" class="form-control" />
+                                                <span asp-validation-for="nongsandetail.MoTa" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label asp-for="anhnsdetail.LinkAnh" class="control-label">Đường dẫn</label>
+                                                <input type="file" name="myfile" asp-for="anhnsdetail.LinkAnh" placeholder="Chọn hình ảnh nông sản" class="form-control" required />
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-col">
+                                            <div align="center">
+                                                <h3 align="center">Xác Nhận Thông Tin</h3>
+                                                <div class="form-group">
+                                                    <button type="reset" class="btn btn-dark">Đặt Lại</button>
+                                                    <input type="submit" asp-action="CreateUploadFile" asp-controller="Home" asp-area="Partner" value="Save" class="btn btn-primary">
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- #/ container -->
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+    <!--**********************************
+
+        Scripts
+    ***********************************-->
+    <script src="~/Partner/plugins/common/common.min.js"></script>
+    <script src="~/Partner/js/custom.min.js"></script>
+    <script src="~/Partner/js/settings.js"></script>
+    <script src="~/Partner/js/gleek.js"></script>
+    <script src="~/Partner/js/styleSwitcher.js"></script>
+
+</body>
+

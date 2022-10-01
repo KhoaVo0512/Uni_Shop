@@ -1,0 +1,142 @@
+﻿@model Uni_Shop.ModelDBs.NongSan
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Partner/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="~/Partner/images/favicon.png">
+    <!-- Custom Stylesheet -->
+    <link href="~/Partner/css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+
+
+
+    <div class="main-wrapper">
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+            <!-- row -->
+            <div class="container-fluid">
+
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <a asp-action="Index" asp-controller="Home" asp-area="Partner">
+                                        <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
+                                        Trở Về Trang Chủ
+                                    </a>
+                                </div>
+                            </div><!--Điều hướng-->
+                            <h4 class="card-title" align="center">Xác Nhận Xoá Nông Sản</h4>
+                            <div class="basic-form">
+                                <form asp-action="Delete" asp-controller="Home" asp-area="Partner">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <input type="hidden" asp-for="MaNongSan" />
+                                    <div class="form-row">
+
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label asp-for="TenNongSan" class="control-label">Tên Nông Sản</label>
+                                                <input asp-for="TenNongSan" class="form-control" readonly />
+                                                <span asp-validation-for="TenNongSan" class="text-danger"></span>
+                                            </div><!--Tên NS-->
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label asp-for="SoLuong" class="control-label">Số Lượng</label>
+                                                <input asp-for="SoLuong" class="form-control" readonly />
+                                                <span asp-validation-for="SoLuong" class="text-danger"></span>
+                                            </div><!--Số Lượng-->
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label asp-for="TrongLuong" class="control-label">Trọng Lượng</label>
+                                                <input asp-for="TrongLuong" class="form-control" readonly />
+                                                <span asp-validation-for="TrongLuong" class="text-danger"></span>
+                                            </div><!--Trọng lượng-->
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label asp-for="Gia" class="control-label">Giá Bán</label>
+                                                <input asp-for="Gia" class="form-control" readonly />
+                                                <span asp-validation-for="Gia" class="text-danger"></span>
+                                            </div><!--Giá-->
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label asp-for="MoTa" class="control-label">Mô Tả</label>
+                                                <input asp-for="MoTa" class="form-control" readonly />
+                                                <span asp-validation-for="MoTa" class="text-danger"></span>
+                                            </div><!--Mô Tả-->
+                                        </div>
+                                    </div>
+                                    <div class="form-col">
+                                        <div align="center">
+                                            <h3 align="center">Xác Nhận Xoá</h3>
+                                            <div class="form-group">
+                                                <input type="hidden" asp-for="MaNongSan" />
+                                                <input type="submit" value="Delete" class="btn btn-danger" />
+                                            </div>
+                                        </div>
+                                    </div><!--Xác nhận-->
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- #/ container -->
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <script src="~/Partner/plugins/common/common.min.js"></script>
+    <script src="~/Partner/js/custom.min.js"></script>
+    <script src="~/Partner/js/settings.js"></script>
+    <script src="~/Partner/js/gleek.js"></script>
+    <script src="~/Partner/js/styleSwitcher.js"></script>
+
+</body>

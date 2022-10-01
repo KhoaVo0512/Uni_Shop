@@ -1,0 +1,97 @@
+﻿@model Uni_Shop.ModelDBs.NhanVien
+
+@{
+    ViewData["Title"] = "CapNhat";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<section class="section profile">
+
+    <div class="row">
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                    <img src="~/Admin/assets/img/admin/@TempData["data"]" alt="Profile" class="rounded-circle">
+                    <h2>@Model.TenNhanVien</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-8">
+
+            <div class="card">
+                <div class="card-body pt-3">
+                    <!-- Bordered Tabs -->
+                    <ul class="nav nav-tabs nav-tabs-bordered">
+
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-overview"> @Html.ActionLink("Thông tin chung", "Index", new { }, new { @style = "font-weight: unset; color: blue;" })</button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-edit">Cập nhật</button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">@Html.ActionLink("Đổi mật khẩu", "ChangePassword", new { id = Model.MaNhanVien }, new { @style = "font-weight: unset; color: blue;" })</button>
+                        </li>
+
+                    </ul>
+                    <div class="tab-content pt-2">
+                        <div class="tab-pane fade show active profile-edit pt-3" id="profile-edit">
+
+                            <!-- Profile Edit Form -->
+                            <form method="POST" asp-action="CapNhat" enctype="multipart/form-data">
+                                <div class="row mb-3">
+                                    <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Mã nhân viên</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input asp-for="MaNhanVien" class="form-control" readonly ="readonly" required/>
+                                        <span asp-validation-for="MaNhanVien" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Họ tên</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input asp-for="TenNhanVien" class="form-control" required/>
+                                        <span asp-validation-for="TenNhanVien" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="Address" class="col-md-4 col-lg-3 col-form-label">Địa chỉ</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input asp-for="DiaChi" class="form-control" required />
+                                        <span asp-validation-for="DiaChi" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="Phone" class="col-md-4 col-lg-3 col-form-label">SĐT</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input asp-for="Sdt" class="form-control" required/>
+                                        <span asp-validation-for="Sdt" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Avatar</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input asp-for="Avatar" class="form-control" type="file" name="myfile" required/>
+                                        <span asp-validation-for="Avatar" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary" value="Save">Lưu</button>
+                                </div>
+                            </form><!-- End Profile Edit Form -->
+
+                        </div>
+                    </div><!-- End Bordered Tabs -->
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

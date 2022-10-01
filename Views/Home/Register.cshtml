@@ -1,0 +1,72 @@
+﻿@model Uni_Shop.ModelDBs.TaiKhoan
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+        <div class="col-xl-10 col-lg-12 col-md-9">
+
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <!-- Nested Row within Card Body -->
+                    <div class="row">
+                        <div class="col-lg-6 d-none d-lg-block bg-register-image">
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-2">Welcome to Uni-Shop!</h1>
+                                    <p class=" text-gray-900 mb-4">Đăng ký ngay để khám phá thêm nhé</p>
+                                </div>
+                                <form method="post">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <div class="form-group">
+                                        <label asp-for="TenDangNhap" class="control-label my-1">Tên đăng nhập</label>
+                                        <input asp-for="TenDangNhap" class="form-control" />
+                                        <span class="text-danger">@ViewBag.error</span>
+                                        <span asp-validation-for="TenDangNhap" class="text-danger"></span>
+
+
+                                    </div>
+                                    <div class="form-group my-3">
+                                        <label asp-for="MatKhau" class="control-label my-1">Mật khẩu</label>
+                                        <input asp-for="MatKhau" class="form-control" />
+                                        <span asp-validation-for="MatKhau" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group my-3">
+                                        <label asp-for="Email" class="control-label my-1">Email</label>
+                                        <input asp-for="Email" class="form-control" />
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group my-3">
+                                        <button class="button-29" type="submit" role="button" type="submit"> Đăng ký</button>
+                                  
+                                    </div>
+                                </form>
+                                
+                                <div class="d-flex align-content-center justify-content-between">
+                                    <div class="text-center">
+                                        <p>Bạn đã có tài khoản? <a class="small" href="/login">Đăng nhập ngay</a></p>
+                                        
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+

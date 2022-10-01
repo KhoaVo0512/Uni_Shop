@@ -1,0 +1,30 @@
+﻿@model Uni_Shop.ModelDBs.DonViTinh
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Thêm đơn vị tính</h2>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a style="color: black;" asp-action="Index" asp-area="Admin" asp-controller="Home">Trang chủ</a></li>
+    <li class="breadcrumb-item active">thêm dơn vị tính</li>
+</ol>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                Tên đơn vị tính:
+                <input asp-for="TenDonViTinh" class="form-control" />
+                <span asp-validation-for="TenDonViTinh" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="margin-top:5px">
+                <input type="submit" value="Thêm" class="btn btn-outline-success" />
+                <button asp-action="Index" class="btn btn-outline-primary">Trở về</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+

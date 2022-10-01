@@ -1,0 +1,97 @@
+﻿
+@{
+    ViewData["Title"] = "feedback";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="feedback">
+    <p>
+        Chào bạn yêu,<br>
+        Cảm ơn bạn đã luôn quan tâm và ủng hộ nhà Uni, chúng tôi rất vui khi được trở thành một trong những sự cân nhắc của bạn trong cuộc sống hàng ngày và rất vinh hạnh khi mang đến cho bạn những điều tuyệt vời nhất.
+    </p>
+    <h4>Hãy để lại phản hồi của bạn để Uni ngày càng hoàn hảo hơn bạn nhá</h4>
+    <form method="post" action="#action-url">
+        <label>1. Bạn thấy chất lượng nông sản của chúng tôi như thế nào?</label><br>
+
+                                                           <span class="star-rating">
+                                                               <input type="radio" name="rating1" value="1"><i></i></input>
+                                                               <input type="radio" name="rating1" value="2"><i></i></input>
+                                                               <input type="radio" name="rating1" value="3"><i></i></input>
+                                                               <input type="radio" name="rating1" value="4"><i></i></input>
+                                                               <input type="radio" name="rating1" value="5"><i></i></input>
+                                                           </span>
+        <div class="clear"></div>
+        <hr class="survey-hr">
+        <label>2. Bạn nghĩ sao về chất lượng dịch vụ của nhà Uni?</label><br>
+        <span class="star-rating">
+            <input type="radio" name="rating2" value="1"><i></i>
+            <input type="radio" name="rating2" value="2"><i></i>
+            <input type="radio" name="rating2" value="3"><i></i>
+            <input type="radio" name="rating2" value="4"><i></i>
+            <input type="radio" name="rating2" value="5"><i></i>
+        </span>
+
+        <div class="clear"></div>
+        <hr class="survey-hr">
+        <label>3. Chấm điểm chung cho Uni-Shop bạn nhé?</label><br><br />
+        <div style="color:grey">
+            <span style="float:left">
+                Không hài lòng
+            </span>
+            <span style="float:right">
+                Hài lòng
+            </span>
+
+        </div>
+        <span class="scale-rating">
+            <label value="1">
+                <input type="radio" name="rating">
+                <label style="width:100%;"></label>
+            </label>
+            <label value="2">
+                <input type="radio" name="rating">
+                <label style="width:100%;"></label>
+            </label>
+            <label value="3">
+                <input type="radio" name="rating">
+                <label style="width:100%;"></label>
+            </label>
+            <label value="4">
+                <input type="radio" name="rating">
+                <label style="width:100%;"></label>
+            </label>
+            <label value="5">
+                <input type="radio" name="rating">
+                <label style="width:100%;"></label>
+            </label>
+            <label value="6">
+                <input type="radio" name="rating">
+                <label style="width:100%;"></label>
+            </label>
+            <label value="7">
+                <input type="radio" name="rating">
+                <label style="width:100%;"></label>
+            </label>
+            <label value="8">
+                <input type="radio" name="rating">
+                <label style="width:100%;"></label>
+            </label>
+            <label value="9">
+                <input type="radio" name="rating">
+                <label style="width:100%;"></label>
+            </label>
+            <label value="10">
+                <input type="radio" name="rating" value="10">
+                <label style="width:100%;"></label>
+            </label>
+        </span>
+        <div class="clear"></div>
+        <hr class="survey-hr">
+        <label for="m_3189847521540640526commentText">4. Bạn sẽ tiếp tục tin dùng nông sản Uni và gợi ý cho người thân của bạn chứ?</label><br /><br />
+<textarea cols="75" name="commentText" rows="5" placeholder="Ý kiến của bạn"></textarea><br>
+        <br>
+        <div class="clear"></div>
+        <a style="background:#43a7d5;color:#fff;padding:12px;border:0" type="submit" href="/">Gửi phản hồi của tôi</a>
+    </form>
+</div>
+

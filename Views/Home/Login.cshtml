@@ -1,0 +1,69 @@
+﻿@model Uni_Shop.Models.LoginModel;
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container">
+
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+        <div class="col-xl-10 col-lg-12 col-md-9">
+
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <!-- Nested Row within Card Body -->
+                    <div class="row">
+                        <div class="col-lg-6 d-none d-lg-block bg-login-image">
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-2">Xin chào bạn yêu!</h1>
+                                    <p class=" text-gray-900 mb-4">Đăng nhập ngay nhé, Uni đang đợi bạn...</p>
+                                </div>
+                                @using (Html.BeginForm(FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, null, new { @class = "alert-error" })
+                            <fieldset>
+                                <div class="form-group my-3">
+                                    @Html.TextBoxFor(model => model.TenDangNhap, new { @class = "form-control", @placeholder = "Tên đăng nhập", @autofocus = "autofocus" })
+                                </div>
+                                <div class="form-group my-3">
+                                    @Html.TextBoxFor(model => model.MatKhau, new { @class = "form-control", @placeholder = "Mật khẩu", @type = "password" })
+                                </div>
+                                <div class="checkbox my-3">
+                                    <label>
+                                        @Html.CheckBoxFor(model => model.Remember)
+                                        Ghi nhớ đăng nhập
+                                    </label>
+                                </div>
+                                <div>
+                                    <button class="button-29 mb-5" role="button" type="submit"> Đăng nhập</button>
+
+                                </div>
+                                <!-- Change this to a button or input when using this as a form -->
+                                </fieldset>
+                                }
+                            <div class="d-flex align-content-center justify-content-between">
+                                <div class="text-center">
+                                    <a class="small" href="forgot-password.html">Quên mật khẩu?</a>
+                                </div>
+                                <div class="text-center">
+                                    <a class="small" href="/register">Tạo tài khoản mới!</a>
+                                </div>
+                            </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+

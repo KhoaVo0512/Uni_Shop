@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewData["Title"] = "ExceptionError";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="errorEx container">
+    <div class="error">
+        <aside>
+            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4424790/Mirror.png" alt="404 Image" />
+        </aside>
+        <main>
+            <h1>404</h1>
+            <p>
+                @ViewBag.message <br/><em>. Vui lòng thử lại sau!</em>
+            </p>
+            <button><a href="/">Trở về trang chủ</a></button>
+        </main>
+    </div>
+</div>
+

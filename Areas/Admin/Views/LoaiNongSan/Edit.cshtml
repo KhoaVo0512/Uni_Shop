@@ -1,0 +1,27 @@
+﻿@model Uni_Shop.ModelDBs.LoaiNongSan
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<h1 class="mt-4">Chỉnh sửa loại nông sản</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a style="color: black;" asp-action="Index" asp-area="Admin" asp-controller="Home">Trang chủ</a></li>
+    <li class="breadcrumb-item active">Chỉnh sửa loại nông sản</li>
+</ol>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                Tên đơn vị tính:
+                <input asp-for="TenLoaiNongSan" class="form-control" />
+                <span asp-validation-for="TenLoaiNongSan" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="margin-top:5px">
+                <input type="submit" value="Lưu" class="btn btn-outline-success" />
+                <button asp-action="Index" class="btn btn-outline-primary">Trở về</button>
+            </div>
+        </form>
+    </div>
+</div>
