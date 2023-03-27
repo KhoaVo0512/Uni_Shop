@@ -13,5 +13,6 @@ namespace Uni_Shop.Models
         public DonViTinh donvitinhdetail { get; set; }
         public LoaiNongSan loainongsandeltail { get; set; }
         public AnhN anhnongsandeltail { get; set; }
+        public NguoiDung nguoidungdetail { get; set; }
     }
 }

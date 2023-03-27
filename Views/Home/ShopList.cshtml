@@ -1,34 +1,69 @@
 ﻿@model IEnumerable<Uni_Shop.Models.NongSanContent>
+@using Uni_Shop.ModelDBs
 
 @{
+    ViewData["Title"] = "ShopList";
     Layout = null;
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
 }
 <div class="album bg-light">
     <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
+
             @foreach (var item in Model)
             {
-                <div class="col">
-                    <div class="card shadow-sm">
-                       
-                        <img src="@Url.Content("~/Myfiles/" + item.anhnongsandeltail.LinkAnh)" width="100%" height="225" /> <!--Để Ảnh ở đây-->
-                        <div class="card-body">
-                            <h4>@item.nongsandetail.TenNongSan</h4>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">Trọng lượng: @item.nongsandetail.TrongLuong @item.donvitinhdetail.TenDonViTinh</small>
-                                <p class="text-danger fw-bold">@item.nongsandetail.Gia VNĐ</p>
-                            </div>
-                            <p class="card-text"> @item.nongsandetail.MoTa</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <a asp-route="addcart" asp-route-productid="@item.nongsandetail.MaNongSan" class="btn btn-sm btn-danger mx-1 ">Thêm giỏ hàng</a>
-                                <a href="/cart" class="btn btn-sm btn-outline-dark">Mua ngay</a>
-
-                            </div>
-                        </div>
+                <div class="featured__item">
+                    <div class="featured__item__pic set-bg" style="height: 150px; background: url('@Url.Content("~/Myfiles/" + item.anhnongsandeltail.LinkAnh)'); background-size: cover">
+                        <ul class="featured__item__pic__hover">
+                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                            <li><a asp-route="addcart" asp-route-productid="@item.nongsandetail.MaNongSan"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="featured__item__text">
+                        <h6><a href="#">@item.nongsandetail.TenNongSan</a></h6>
+                        <h5>@item.nongsandetail.Gia VNĐ</h5>
                     </div>
                 </div>
             }
 
         </div>
     </div>
+</div>
+<div class="container">
+    @if (pager.TotalPages > 0)
+    {
+        <ul class="pagination justify-content-center">
+            @if (pager.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Home" asp-action=@ViewData["Title"] asp-route-maloai ="@Model.First().loainongsandeltail.MaLoaiNongSan" asp-route-pg="1">Đầu</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Home" asp-action=@ViewData["Title"] asp-route-maloai ="@Model.First().loainongsandeltail.MaLoaiNongSan" asp-route-pg="@(pager.CurrentPage - 1)">Trước</a>
+                </li>
+            }
+            @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+            {
+                <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-controller="Home" asp-action="ShopList" asp-route-maloai ="@Model.First().loainongsandeltail.MaLoaiNongSan" asp-route-pg="@pge">@pge</a>
+                </li>
+            }
+            @if (pager.CurrentPage < pager.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Home" asp-action=@ViewData["Title"] asp-route-maloai ="@Model.First().loainongsandeltail.MaLoaiNongSan" asp-route-pg="@(pager.CurrentPage +1)">Sau</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Home" asp-action=@ViewData["Title"] asp-route-maloai ="@Model.First().loainongsandeltail.MaLoaiNongSan" asp-route-pg="@(pager.TotalPages)">Cuối</a>
+                </li>
+            }
+        </ul>
+    }
 </div>

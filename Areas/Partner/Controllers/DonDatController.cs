@@ -13,7 +13,7 @@ namespace Uni_Shop.Areas.Partner.Controllers
     [Area("Partner")]
     public class DonDatController : Controller
     {
-        TN230Context db = new TN230Context();
+        TN230_V1Context db = new TN230_V1Context();
         public IActionResult Index()
         {
             return View();
@@ -58,7 +58,7 @@ namespace Uni_Shop.Areas.Partner.Controllers
                              //from e in table4.DefaultIfEmpty()
                              //join f in taikhoans on e.MaTaiKhoan equals f.MaTaiKhoan into table5
                              //from f in table5.DefaultIfEmpty()
-                             join a in trangthais on t.Ma_Trang_Thai equals a.Ma_Trang_Thai
+                             join a in trangthais on t.MaTrangThai equals a.Ma_Trang_Thai
                              select new ghdd
                              {
                                  dondatdetail = t,
@@ -86,13 +86,15 @@ namespace Uni_Shop.Areas.Partner.Controllers
            
         }
 
+
         [HttpPost]
+        [Route("/Partner/DonDat/EditDD", Name = "EditDD")]
         public async Task<IActionResult> EditDD([FromForm] int madondat, [FromForm] int trangthaiid)
         {
             var DDitem = (from s in db.DonDats where s.MaDonDat == madondat select s).FirstOrDefault();
             if (DDitem != null)
             {
-                DDitem.Ma_Trang_Thai = trangthaiid;
+                DDitem.MaTrangThai = trangthaiid;
                 db.Update(DDitem);
                 await db.SaveChangesAsync();
                 if (trangthaiid == 4)
@@ -114,7 +116,9 @@ namespace Uni_Shop.Areas.Partner.Controllers
             }
             else
                 return NotFound();
-            return RedirectToAction(nameof(dondat));
+            //return RedirectToAction(nameof(dondat));
+            //return RedirectToAction("Origingiaodiendoitac");
+            return RedirectToAction("giaodiendoitac", "Home", new { area = "Partner" });
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -10,6 +11,7 @@ namespace Uni_Shop.ModelDBs
         public NguoiDung()
         {
             DonDats = new HashSet<DonDat>();
+            DonXinDTs = new HashSet<DonXinDT>();
             GianHangs = new HashSet<GianHang>();
         }
 
@@ -22,7 +24,7 @@ namespace Uni_Shop.ModelDBs
 
         public virtual TaiKhoan MaTaiKhoanNavigation { get; set; }
         public virtual ICollection<DonDat> DonDats { get; set; }
-        public virtual ICollection<GianHang> GianHangs { get; set; }
         public virtual ICollection<DonXinDT> DonXinDTs { get; set; }
+        public virtual ICollection<GianHang> GianHangs { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace Uni_Shop.Areas.Admin.Controllers
     [Area("Admin")]
     public class HoaDonController : Controller
     {
-        TN230Context db = new TN230Context();
+        TN230_V1Context db = new TN230_V1Context();
         public IActionResult Index(int pg=1)
         {
             if (HttpContext.Session.GetInt32("Chan") != 1)
@@ -33,7 +33,7 @@ namespace Uni_Shop.Areas.Admin.Controllers
                           join d in donDats on h.MaDonDat 
                           equals d.MaDonDat into table1
                           from d in table1.DefaultIfEmpty()
-                          join t in trang_Thais on d.Ma_Trang_Thai equals t.Ma_Trang_Thai into table3
+                          join t in trang_Thais on d.MaTrangThai equals t.Ma_Trang_Thai into table3
                           from t in table3.DefaultIfEmpty()
                           join n in nguoidungs on d.MaNguoiDung equals n.MaNguoiDung into tables2
                           from n in tables2.DefaultIfEmpty()

@@ -15,15 +15,25 @@
     <div id="chua">
 
     </div>
-    <button class="btn btn-outline-primary position-absolute  " id="huy" style=" width: 70px; right: 120px; top: 50px;">Hủy</button>
+    <button class="button-29" id="huy" style=" width: 70px; right: 120px; top: 50px;">Hủy</button>
 </div>
 <div class="container">
-    <h1 class="mt-4">Danh sách sản phẩm</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a style="color: black;" asp-action="Index" asp-area="Admin" asp-controller="Home">Trang chủ</a></li>
-        <li class="breadcrumb-item active">Danh sách loại nông sản</li>
-    </ol>
-    <button class="btn btn-outline-primary" style="margin-bottom:20px;">@Html.ActionLink("Thêm loại nông sản", "Create")</button>
+    <div class="d-flex justify-content-between">
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a style="color: black;" asp-action="Index" asp-area="Admin" asp-controller="Home">Trang chủ</a></li>
+            <li class="breadcrumb-item active">Danh sách loại nông sản</li>
+        </ol>
+        <div class="justify-content-end">
+            <form asp-controller="LoaiNongSan" asp-action="Index">
+                <span class="btn-group">
+                    <input class="form-control" type="text" name="SearchText" placeholder="Tìm kiếm" />
+                    <input class="p-1 ml-2 btn btn-sm btn-info" type="submit" value="Search" />
+                </span>
+
+            </form>
+        </div>
+    </div>
+    <button class="button-29" style="margin-bottom:20px;">@Html.ActionLink("Thêm loại nông sản", "Create")</button>
     <table class="table" style="background:white">
         <thead class="table-dark">
             <tr>

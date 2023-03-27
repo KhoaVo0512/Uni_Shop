@@ -12,9 +12,9 @@ namespace Uni_Shop.Areas.Admin.Controllers
     [Area("Admin")]
     public class DoiTacController : Controller
     {
-        TN230Context db = new TN230Context();
+        TN230_V1Context db = new TN230_V1Context();
 
-        public IActionResult Index(int pg=1)
+        public IActionResult Index(int pg = 1, string SearchText = "")
         {
             if (HttpContext.Session.GetInt32("Chan") != 1)
             {
@@ -26,17 +26,45 @@ namespace Uni_Shop.Areas.Admin.Controllers
             {
                 return StatusCode(StatusCodes.Status403Forbidden);
             }
-            var donViTinhs = (from s in db.NguoiDungs join b in db.TaiKhoans on s.MaTaiKhoan equals b.MaTaiKhoan where b.MaQuyen == 3 select s).ToList();
+            IEnumerable<DoiTacContent> doitac;
+            if (SearchText != null && SearchText != "")
+            {
+                doitac = (from s in db.NguoiDungs
+                          join b in db.TaiKhoans on s.MaTaiKhoan equals b.MaTaiKhoan into table1
+                          from b in table1
+                          join g in db.GianHangs on s.MaNguoiDung equals g.MaNguoiDung
+                          where b.MaQuyen == 3
+                          where g.TenGianHang.Contains(SearchText)
+                          select new DoiTacContent
+                          {
+                              nguoidung = s,
+                              gianHang = g
+                          });
+            }
+            else
+            {
+                doitac = (from s in db.NguoiDungs
+                          join b in db.TaiKhoans on s.MaTaiKhoan equals b.MaTaiKhoan into table1
+                          from b in table1
+                          join g in db.GianHangs on s.MaNguoiDung equals g.MaNguoiDung
+                          where b.MaQuyen == 3
+                          select new DoiTacContent
+                          {
+                              nguoidung = s,
+                              gianHang = g
+                          });
+
+            }
+
             const int pageSize = 6;
             if (pg < 1)
                 pg = 1;
-            int recsCount = donViTinhs.Count();
+            int recsCount = doitac.Count();
             var pager = new Pager(recsCount, pg, pageSize);
             int recSkip = (pg - 1) * pageSize;
-            var data = donViTinhs.Skip(recSkip).Take(pager.PageSize).ToList();
+            var data = doitac.Skip(recSkip).Take(pager.PageSize).ToList();
             this.ViewBag.Pager = pager;
             return View(data);
-            //return View(donViTinhs);
         }
         [HttpGet]
         public IActionResult Delete(int? id)
@@ -75,7 +103,7 @@ namespace Uni_Shop.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
         [HttpGet]
-        public IActionResult XetDuyetDT(int pg=1)
+        public IActionResult XetDuyetDT(int pg = 1)
         {
             if (HttpContext.Session.GetInt32("Chan") != 1)
             {
@@ -87,12 +115,14 @@ namespace Uni_Shop.Areas.Admin.Controllers
             {
                 return StatusCode(StatusCodes.Status403Forbidden);
             }
-            List<DonXinDT> donXinDTs = db.DonXinDTs.ToList();
+            List<DonXinDT> donXinDTs = db.DonXinDTs.Where(s=>s.NgayDuyet == null).ToList();
             List<NguoiDung> nguoiDungs = db.NguoiDungs.ToList();
-            var nd = from d in donXinDTs join n in nguoiDungs on d.MaNguoiDung equals n.MaNguoiDung select new DoiTacContent 
+            var nd = from d in donXinDTs
+                     join n in nguoiDungs on d.MaNguoiDung equals n.MaNguoiDung
+                     select new DoiTacContent
                      {
-                        donxinDT = d,
-                        nguoidung = n        
+                         donxinDT = d,
+                         nguoidung = n
                      };
             const int pageSize = 5;
             if (pg < 1)
@@ -107,7 +137,7 @@ namespace Uni_Shop.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Yes(int? id)
         {
-             if (HttpContext.Session.GetInt32("Chan") != 1)
+            if (HttpContext.Session.GetInt32("Chan") != 1)
             {
                 int session = (int)HttpContext.Session.GetInt32("taikhoan");
                 var kh = (from s in db.NhanViens where s.MaTaiKhoan == session select s.Avatar).Single();
@@ -132,7 +162,7 @@ namespace Uni_Shop.Areas.Admin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Yes (int id)
+        public IActionResult Yes(int id)
         {
             var nd = db.NguoiDungs.Find(id).MaTaiKhoan;
             var tk = db.TaiKhoans.FirstOrDefault(u => u.MaTaiKhoan == nd);

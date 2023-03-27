@@ -15,7 +15,7 @@ namespace Uni_Shop.Areas.Partner.Controllers
     [Area("Partner")]
     public class HomeController : Controller
     {
-        TN230Context db = new TN230Context();
+        TN230_V1Context db = new TN230_V1Context();
         public IActionResult Index(int pg = 1)
         {
             int f = 1;
@@ -177,8 +177,8 @@ namespace Uni_Shop.Areas.Partner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUploadFile(CreateImg nongSan, IFormFile myfile)
         {
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 try
                 {
                     //Lay ten luu vao bien fii
@@ -219,23 +219,23 @@ namespace Uni_Shop.Areas.Partner.Controllers
                     return View(nongSan);
                 }
             }
-            return View(nongSan);
+        //    return View(nongSan);
 
-        }
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditUpLoadImg(NongSan nongSan)
         {
-            if (ModelState.IsValid)
-            {
-                int i = 1;
+            //if (ModelState.IsValid)
+            //{
+                
                 nongSan.TrangThai = 1;
                 db.NongSans.Update(nongSan);
                 await db.SaveChangesAsync();
-                return RedirectToAction(nameof(gianhang));
-            }
-            return View(nongSan);
+                return RedirectToAction("Filter1", "QuanLyNS", new { area = "Partner" });
+            //}
+            //return View(nongSan);
         }
 
 
@@ -275,16 +275,20 @@ namespace Uni_Shop.Areas.Partner.Controllers
         {
             ViewBag.temp5 = new SelectList(db.NongSans.ToList(), "MaNongSan", "TenNongSan", selecttemp3);
         }
-        [HttpGet]
-        public IActionResult EditImage(int? id)
+        [HttpPost]
+        public IActionResult EditImage(int? maimg)
         {
             temp5();
-            if (id == null)
+            if (maimg == null)
             {
                 return BadRequest();
             }
-            var img = db.AnhNs.Find(id);
-            ViewBag.img = img.LinkAnh;
+
+            List<AnhN> anhNs = db.AnhNs.Where(s => s.MaNongSan == maimg).ToList();
+            ViewBag.img = anhNs[0].LinkAnh;
+            int ma = anhNs[0].MaAnh;
+            var img = db.AnhNs.Find(ma);
+
             if (img == null)
             {
                 return NotFound();
@@ -312,9 +316,161 @@ namespace Uni_Shop.Areas.Partner.Controllers
             a.LinkAnh = fii;
             db.AnhNs.Update(a);
             await db.SaveChangesAsync();
-            return RedirectToAction(nameof(gianhang));
+            return RedirectToAction("Filter1", "QuanLyNS", new { area = "Partner" });
         }
 
-       
+        
+        private void temp7(object selecttemp5 = null)
+        {
+            ViewBag.Compani1 = new SelectList(db.TrangThais.ToList(), "Ma_Trang_Thai", "Ten_Trang_Thai", selecttemp5);
+
+            
+
+        }
+
+        [HttpGet]
+        public IActionResult giaodiendoitac(int pg = 1)
+        {
+
+            List<Trang_Thai> trang_Thais = db.TrangThais.ToList();
+            List<NongSan> nongSans = db.NongSans.ToList();
+            List<GianHang> gianHangs = db.GianHangs.ToList();
+            List<DonDat> donDats = db.DonDats.Where(x => x.MaTrangThai == 1).ToList();
+            List<NguoiDung> nguoiDungs = db.NguoiDungs.ToList();
+            List<ChiTietNsDd> chiTietNsDds = db.ChiTietNsDds.ToList();
+            List<HinhThucThanhToan> hinhThucThanhToans = db.HinhThucThanhToans.ToList();
+            string id = HttpContext.Session.GetString("taikhoan");
+            int ma = Convert.ToInt32(id);
+
+            int nguoiDungs1 = db.NguoiDungs.Where(s => s.MaTaiKhoan == ma).SingleOrDefault().MaNguoiDung;
+            string tennguoidung = db.NguoiDungs.Where(s => s.MaTaiKhoan == ma).SingleOrDefault().TenNguoiDung;
+            ViewBag.tennguoidung = tennguoidung;
+            string tengianhan = db.GianHangs.Where(s => s.MaNguoiDung == nguoiDungs1).SingleOrDefault().TenGianHang;
+            ViewBag.tengianhang = tengianhan;
+
+            temp7();
+
+
+
+            //int matk = db.NguoiDungs.Where(s => s.MaTaiKhoan == ma).SingleOrDefault().MaNguoiDung;
+            //int gianhangnew = db.GianHangs.Where(s => s.MaNguoiDung == matk).SingleOrDefault().MaGianHang;
+
+
+            //var doitac = (from d in donDats
+            //              join c in chiTietNsDds on d.MaDonDat equals c.MaDonDat into table1
+            //              from c in table1.DefaultIfEmpty()
+            //              join n in nongSans on c.MaNongSan equals n.MaNongSan into table2
+            //              from n in table2.DefaultIfEmpty()
+            //              join hh in hinhThucThanhToans on d.MaHttt equals hh.MaHtth                          
+            //              where  n.MaGianHang == gianhangnew
+            //              select new PartnerContent
+            //              {
+
+            //                  chitietdetail = c,
+            //                  nongsandetail = n,
+
+            //                  hinhthucdetail = hh,
+            //                  dondatdetail = d
+
+            //              });
+
+            var doitac = (from d in donDats
+                          join c in chiTietNsDds on d.MaDonDat equals c.MaDonDat into table1
+                          from c in table1.DefaultIfEmpty()
+                          join n in nongSans on c.MaNongSan equals n.MaNongSan into table2
+                          from n in table2.DefaultIfEmpty()
+                          join g in gianHangs on n.MaGianHang equals g.MaGianHang into table3
+                          from g in table3.DefaultIfEmpty()
+                          join nd in nguoiDungs on g.MaNguoiDung equals nd.MaNguoiDung into table4
+                          from nd in table4.DefaultIfEmpty()
+                          join hh in hinhThucThanhToans on d.MaHttt equals hh.MaHtth
+                          where nd.MaTaiKhoan == ma && n.TrangThai == 1
+                          select new PartnerContent
+                          {
+
+                              chitietdetail = c,
+                              nongsandetail = n,
+                              gianhangdetail = g,
+                              nguoidungdetail = nd,
+                              hinhthucdetail = hh,
+                              dondatdetail = d
+                              
+
+                          });
+            const int pageSize = 8;
+            if (pg < 1)
+                pg = 1;
+            int recsCount = doitac.Count();
+            var pager = new Pager(recsCount, pg, pageSize);
+            int recSkip = (pg - 1) * pageSize;
+            var data = doitac.Skip(recSkip).Take(pager.PageSize).ToList();
+            this.ViewBag.Pager = pager;
+            ViewBag.doitac = data;
+            return View(trang_Thais);
+        }
+
+
+        private void temp6(int id, object selecttemp5 = null)
+        {
+            ViewBag.Compani = new SelectList(db.TrangThais.Where(s => s.Ma_Trang_Thai == id).ToList(), "Ma_Trang_Thai", "Ten_Trang_Thai", selecttemp5);
+
+        }
+
+        [Route("/Partner/Home/list2/{maloai}", Name = "ShopList2")]
+        public IActionResult ShopList2(int maloai, int pg = 1)
+        {
+
+            //ViewBag.id = maloai;
+            List<NongSan> nongSans = db.NongSans.ToList();
+            List<GianHang> gianHangs = db.GianHangs.ToList();
+            //List<DonDat> donDats = db.DonDats.Where(x => x.MaTrangThai == maloai && x.MaDonDat == 1).ToList();
+            List<DonDat> donDats = db.DonDats.Where(x => x.MaTrangThai == maloai).ToList();
+            List<NguoiDung> nguoiDungs = db.NguoiDungs.ToList();
+            List<ChiTietNsDd> chiTietNsDds = db.ChiTietNsDds.ToList();
+            List<HinhThucThanhToan> hinhThucThanhToans = db.HinhThucThanhToans.ToList();
+            List<Trang_Thai> trang_Thais = db.TrangThais.ToList();
+            string id = HttpContext.Session.GetString("taikhoan");
+            int ma = Convert.ToInt32(id);
+            //temp6(maloai);
+            HttpContext.Session.SetInt32("matrangthaidd", maloai);
+            temp7();
+            var doitac = (from d in donDats
+                          join c in chiTietNsDds on d.MaDonDat equals c.MaDonDat into table1
+                          from c in table1.DefaultIfEmpty()
+                          join n in nongSans on c.MaNongSan equals n.MaNongSan into table2
+                          from n in table2.DefaultIfEmpty()
+                          join g in gianHangs on n.MaGianHang equals g.MaGianHang into table3
+                          from g in table3.DefaultIfEmpty()
+                          join nd in nguoiDungs on g.MaNguoiDung equals nd.MaNguoiDung into table4
+                          from nd in table4.DefaultIfEmpty()
+                          join hh in hinhThucThanhToans on d.MaHttt equals hh.MaHtth into table5
+                          from hh in table5.DefaultIfEmpty()
+                          join tt in trang_Thais on d.MaTrangThai equals tt.Ma_Trang_Thai
+                          where nd.MaTaiKhoan == ma && n.TrangThai == 1
+                          select new PartnerContent
+                          {
+                              nongsandetail = n,
+                              gianhangdetail = g,
+                              nguoidungdetail = nd,
+                              hinhthucdetail = hh,
+                              trangthaidetail = tt,
+                              dondatdetail = d,
+                              chitietdetail = c,
+                              mattdd = maloai
+
+                          });
+            const int pageSize = 8;
+            if (pg < 1)
+                pg = 1;
+            int recsCount = doitac.Count();
+            var pager = new Pager(recsCount, pg, pageSize);
+            int recSkip = (pg - 1) * pageSize;
+            var data = doitac.Skip(recSkip).Take(pager.PageSize).ToList();
+            this.ViewBag.Pager = pager;
+            ViewBag.doitac = data;
+            return View(doitac);
+        }
+
+
     }
 }

@@ -1,0 +1,12 @@
+﻿@model Uni_Shop.ModelDBs.NongSan
+
+@{
+    Layout = null;
+}
+
+<h4>Bạn muốn xóa loại nông sản này?</h4>
+<div>
+    <form asp-action="Delete" asp-controller="QuanLyNS" asp-area="Partner" style="margin-bottom: 20px ">
+        <input type="submit" value="Xóa" class="btn btn-outline-danger " style="position: absolute; width: 70px; top: 50px; left: 120px;" />
+    </form>
+</div>

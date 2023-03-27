@@ -1,0 +1,132 @@
+﻿@model IEnumerable<Uni_Shop.Models.PartnerContent>
+@using Uni_Shop.ModelDBs
+@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "ShopList2";
+    Layout = null;
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+    double total = 0;
+
+}
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+<script>
+    async function changeDD(madondat, trangthaiid) {
+        //console.log test du lieu tren f12
+        //console.log(trangthaiid);
+        //alert(madondat);
+        //alert(trangthaiid);
+        await $.ajax({
+            type: "POST", url: '/Partner/DonDat/EditDD', data: { madondat: madondat, trangthaiid: trangthaiid }, success: function (response) {
+                if (response.success) {
+                }
+            },
+            error: function (reponse) {
+                alert("error!");
+            }
+        });
+        location.reload();
+    }
+</script>
+<div class="album bg-light">
+    <div class="container">
+        <div class="row">
+            @foreach (var item in ViewBag.doitac)
+            {
+                <div class="col-4 mt-2">
+                    <div class="card ">
+                        <div class="card-body">
+                            <p class="card-title" style="font-size: 1.28rem; font-weight: bold">
+                                @item.dondatdetail.MaGd@item.nongsandetail.MaNongSan
+                            </p>
+                            <div class="d-flex align-items-center justify-content-between">
+
+                                <p class="card-text text-danger" style="font-weight: 600">@item.hinhthucdetail.TenHTTT</p>
+                                <button class="btn btn-danger chitiet" style="font-weight:bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample-@item.dondatdetail.MaGd-@item.nongsandetail.MaNongSan" aria-expanded="false" aria-controls="collapseExample-@item.dondatdetail.MaGd-@item.nongsandetail.MaNongSan">Chi tiết</button>
+
+                            </div>
+                            <p class="card-text buydate">@item.dondatdetail.NgayDatHang</p>
+                            <div class="collapse multi-collapse" id="collapseExample-@item.dondatdetail.MaGd-@item.nongsandetail.MaNongSan">
+                                <div class="card card-body">
+
+                                    <select onchange="changeDD(@item.dondatdetail.MaDonDat, value)" value="@item.dondatdetail.MaTrangThai" id="@item.dondatdetail.MaTrangThai" name="@item.dondatdetail.MaTrangThai" asp-items="ViewBag.Compani1"></select>
+
+                                    <div class="container card shadow-sm " style="height:100%">
+                                        <h5 class="mt-2 p-2">Thông tin chi tiết</h5>
+                                        <div class="d-flex flex-row justify-content-between">
+                                            <h6>Sản phẩm</h6>
+                                            <h6>Giá (VNĐ)</h6>
+                                        </div>
+
+                                        <div class="d-flex flex-row justify-content-between">
+                                            <p>@item.nongsandetail.TenNongSan x @item.chitietdetail.SoLuongDat </p>
+                                            <p>
+                                                @{ double val = Convert.ToDouble(item.nongsandetail.Gia); }
+                                                @val.000
+                                            </p>
+                                            <div class="hidden">
+                                                @{ double val2 = Convert.ToDouble(item.nongsandetail.Gia) * item.chitietdetail.SoLuongDat;
+                                                    total = val2;
+                                                }
+                                                @val2
+                                            </div>
+                                        </div>
+
+                                        <hr class="hr" />
+                                        <div class="d-flex flex-row justify-content-between mb-2">
+                                            <p><b>Tổng cộng</b> </p>
+
+                                            <p>
+                                                @total
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    @if (pager.TotalPages > 0)
+    {
+        <ul class="pagination justify-content-center">
+            @if (pager.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Home" asp-action=@ViewData["Title"] asp-route-pg="1">Đầu</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Home" asp-action=@ViewData["Title"] asp-route-pg="@(pager.CurrentPage - 1)">Trước</a>
+                </li>
+            }
+            @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+            {
+                <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-controller="Home" asp-action="ShopList2" asp-route-maloai="@Model.First().trangthaidetail.Ma_Trang_Thai" asp-route-pg="@pge">@pge</a>
+                </li>
+            }
+            @if (pager.CurrentPage < pager.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Home" asp-action=@ViewData["Title"] asp-route-pg="@(pager.CurrentPage +1)">Sau</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Home" asp-action=@ViewData["Title"] asp-route-pg="@(pager.TotalPages)">Cuối</a>
+                </li>
+            }
+        </ul>
+    }
+</div>

@@ -1,0 +1,92 @@
+﻿@model Uni_Shop.Models.CheckOut
+
+@{
+    ViewData["Title"] = "Xác nhận thanh toán";
+    double total = 0;
+}
+
+<h3 class="mx-5">CHI TIẾT ĐƠN HÀNG</h3>
+
+<div class="album bg-light mt-3">
+    <div class="container">
+        <div class="progress">
+            <div class="progress-bar bg-danger" role="progressbar" style="width: 32%" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
+            <div style="width: 2%"></div>
+            <div class="progress-bar bg-warning" role="progressbar" style="width: 32%" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
+            <div style="width: 2%"></div>
+            <div class="progress-bar bg-info" role="progressbar" style="width: 32%" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="row row-cols-1 row-cols-sm-3 g-3">
+            @* thong tin *@
+            <div class="col">
+                <div class="container card shadow-sm " style="height:100%">
+                    <h5 class="mt-2 p-2">Thông tin khách hàng</h5>
+                    <div class="mb-2 mx-2">
+                        <p>Họ và tên: @Model.nguoidungdetail.TenNguoiDung</p>
+
+                    </div>
+                    <div class="mb-2 mx-2">
+                        <p>Số điện thoại: @Model.nguoidungdetail.Sdt</p>
+
+                    </div>
+                    <div class="mb-2 mx-2">
+                        <p>Địa chỉ: @Model.nguoidungdetail.DiaChi</p>
+
+                    </div>
+                </div>
+            </div>
+            @* san pham*@
+            <div class="col">
+                <div class="container card shadow-sm " style="height:100%">
+                    <h5 class="mt-2 p-2">Thông tin sản phẩm</h5>
+                    <div class="d-flex flex-row justify-content-between">
+                        <h6>Sản phẩm</h6>
+                        <h6>Giá (VNĐ)</h6>
+                    </div>
+                    @foreach (var item in Model.cartcontentdetail)
+                    {
+                        <div class="d-flex flex-row justify-content-between">
+                            <p>@item.nongsandetail.TenNongSan x @item.SL </p>
+                            <p>
+                                @{ double val = Convert.ToDouble(item.nongsandetail.Gia) * item.SL; }
+                                @val 000
+                            </p>
+                            <div class="hidden">
+                                @{ double val2 = Convert.ToDouble(item.nongsandetail.Gia) * item.SL;
+                                    total += val2;
+                                }
+                                @val2
+                            </div>
+                        </div>
+                    }
+                    <hr class="hr" />
+                    <div class="d-flex flex-row justify-content-between mb-2">
+                        <p><b>Tổng cộng</b> </p>
+
+                        <p>
+                            @total
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+            @* Thanh toan*@
+            <div class="col">
+                <div class="container card shadow-sm " style="height:100%">
+                    <h5 class="mt-2 p-2">Thông tin đơn hàng</h5>
+                    <div class="mb-2 mx-2">
+                        <p>Mã đơn hàng: @ViewBag.PayPalId</p>
+
+                    </div>
+                    <div class="mx-2 mb-2">
+                        <p>Thời gian:  @DateTime.Now.ToString()</p>
+                    </div>
+                    <div class="mx-2 mb-2">
+                        <p> Phương thức thanh toán: Ví PAYPAL</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

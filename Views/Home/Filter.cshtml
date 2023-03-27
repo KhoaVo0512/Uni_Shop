@@ -1,0 +1,155 @@
+﻿@model IEnumerable<Uni_Shop.ModelDBs.LoaiNongSan>
+@using Uni_Shop.ModelDBs
+@{
+    ViewData["Title"] ="Filter";
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+}
+<!--<script>-->
+   
+  @*  id.classList.add('active');*@
+    <!--async function Show(maloai) {
+        await $.ajax({
+            type: 'POST', url: 'list/{maloai}', data: { maloai: maloai}, success: function (response) {
+                $("#res").html(response);
+            },
+            error: function (response) {
+                alert("error!");  //
+            }
+        });
+
+    }
+
+</script>-->
+<!-- Hero Section Begin -->
+<section class="hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="hero__categories">
+                    <div class="hero__categories__all">
+                        <i class="fa fa-bars"></i>
+                        <span>Danh mục nông sản</span>
+                    </div>
+                    <ul class="list-categories">
+                        @foreach (var item in Model)
+                        {
+                            <li class="loai" id="@Html.DisplayFor(modelItem => item.MaLoaiNongSan)"><a onclick="Show(@Html.DisplayFor(modelItem => item.MaLoaiNongSan))">@Html.DisplayFor(modelItem => item.TenLoaiNongSan)</a></li>
+
+                        }
+
+                    </ul>
+                </div>
+
+            </div>
+            <div class="col-lg-9">
+                <div class="hero__search">
+                    <div class="hero__search__form">
+                        <form asp-action="filter">
+                            <input type="text" name="SearchText" id="Find" placeholder="Bạn cần gì ở đây?">
+                            <button type="submit" class="site-btn">Tìm kiếm</button>
+                        </form>
+                    </div>
+                    <div class="hero__search__phone">
+                        <div class="hero__search__phone__icon">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <div class="hero__search__phone__text">
+                            <h5>+84 1245 678 999</h5>
+                            <span>Hỗ trợ 24/24</span>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-lg-9 col-md-6 col-12 ">
+                    <div id="res">
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
+
+                            @foreach (var item in ViewBag.nongsan)
+                            {
+                                <div class="featured__item">
+                                    <div class="featured__item__pic set-bg" style="height: 150px; background: url('@Url.Content("~/Myfiles/" + item.anhnongsandeltail.LinkAnh)'); background-size: cover">
+                                        <ul class="featured__item__pic__hover">
+                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                            <li><a asp-route="addcart" asp-route-productid="@item.nongsandetail.MaNongSan"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="featured__item__text">
+                                        <h6><a href="#">@item.nongsandetail.TenNongSan</a></h6>
+                                        <h5>@item.nongsandetail.Gia VNĐ</h5>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                        <div class="container">
+                            @if (pager.TotalPages > 0)
+                            {
+                                <ul class="pagination justify-content-center">
+                                    @if (pager.CurrentPage > 1)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" asp-controller="Home" asp-action=@ViewData["Title"] asp-route-pg="1">Đầu</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" asp-controller="Home" asp-action=@ViewData["Title"] asp-route-pg="@(pager.CurrentPage - 1)">Trước</a>
+                                        </li>
+                                    }
+                                    @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                                    {
+                                        <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
+                                            <a class="page-link" asp-controller="Home" asp-action=@ViewData["Title"] asp-route-pg="@pge">@pge</a>
+                                        </li>
+                                    }
+                                    @if (pager.CurrentPage < pager.TotalPages)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" asp-controller="Home" asp-action=@ViewData["Title"] asp-route-pg="@(pager.CurrentPage +1)">Sau</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" asp-controller="Home" asp-action=@ViewData["Title"] asp-route-pg="@(pager.TotalPages)">Cuối</a>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    let id = document.getElementById("1");
+    id.classList.add('active');
+    let loai = document.getElementsByClassName("loai");
+   
+    async function Show(maloai) {
+        for (i = 0; i < loai.length; i++) {
+            if (loai[i].classList.contains('active')) {
+                loai[i].classList.remove('active');
+            }
+        }
+        let id1 = document.getElementById(maloai);
+        id1.classList.add('active');
+        await $.ajax({
+            type: 'POST', url: 'list/{maloai}', data: { maloai: maloai}, success: function (response) {
+                $("#res").html(response);
+            },
+            error: function (response) {
+                alert("error!");  //
+            }
+        });
+
+    }
+
+</script>
+<script>
+   
+</script>

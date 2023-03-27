@@ -29,11 +29,11 @@
                         Danh mục
                     </a>
                     <ul class="dropdown-menu " aria-labelledby="navbarDarkDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Rau xanh</a></li>
-                        <li><a class="dropdown-item" href="#">Các loại củ và hạt</a></li>
-                        <li><a class="dropdown-item" href="#">Trái cây ăn quả</a></li>
-                        <li><a class="dropdown-item" href="#">Đồ khô</a></li>
-                        <li><a class="dropdown-item" href="#">Lương thực</a></li>
+                        <li><a class="dropdown-item" href="/filter">Rau xanh</a></li>
+                        <li><a class="dropdown-item" href="/filter">Các loại củ và hạt</a></li>
+                        <li><a class="dropdown-item" href="/filter">Trái cây ăn quả</a></li>
+                        <li><a class="dropdown-item" href="/filter">Đồ khô</a></li>
+                        <li><a class="dropdown-item" href="/filter">Lương thực</a></li>
                     </ul>
                 </li>
                 @* Services *@
@@ -56,9 +56,9 @@
                         <span><i class="fas fa-shopping-bag fa-lg"></i></span>
                         @if (@Context.Session.GetInt32("countCart") != null)
                         {<span class="badge rounded-pill badge-notification bg-danger">@Context.Session.GetInt32("countCart")</span> }
-                                    else
-                                    {
-                        <span class="badge rounded-pill badge-notification bg-danger">0</span>}
+                    else
+                    {
+        <span class="badge rounded-pill badge-notification bg-danger">0</span>}
                         @*@await Html.PartialAsync("_CartPartial")*@
 
                     </a>
@@ -70,9 +70,12 @@
                         @if (@Context.Session.GetString("username") != null)
                         {
             <strong class="d-none d-sm-block ms-1">@Context.Session.GetString("username")</strong> }
-                        else
-                        {
-            <strong class="d-none d-sm-block ms-1">Guest</strong>}
+        else if (Context.User.Identity.IsAuthenticated)
+        {
+<strong class="d-none d-sm-block ms-1">@User.Identity.Name</strong> }
+            else
+            {
+<strong class="d-none d-sm-block ms-1">Guest</strong>}
 
                     </div>
                 </li>
@@ -81,14 +84,16 @@
                         <i class="fas fa-plus-circle fa-lg"></i>
                     </a>
                     <ul class="dropdown-menu " aria-labelledby="navbarDarkDropdownMenuLink">
-                        @if (@Context.Session.GetString("username") == null)
+                        @if (@Context.Session.GetString("username") == null && !Context.User.Identity.IsAuthenticated)
                         {
             <li><a class="dropdown-item" href="/login">Đăng nhập</a></li>
-                            <li><a class="dropdown-item" href="/register">Đăng ký</a></li> }
-                                        else
-                                        {
-                            <li><a class="dropdown-item" href="/profile">Thông tin cá nhân</a></li>
-                                            <li><a class="dropdown-item" href="/Logout">Đăng xuất</a></li>}
+                            <li><a class="dropdown-item" href="/register">Đăng ký</a></li>
+ }
+                        else
+                        {
+            <li><a class="dropdown-item" href="/profile">Thông tin cá nhân</a></li>
+                            <li><a class="dropdown-item" href="/Logout">Đăng xuất</a></li>
+}
                     </ul>
                 </li>
             </ul>

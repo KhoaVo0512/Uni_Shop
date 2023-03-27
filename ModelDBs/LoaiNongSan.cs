@@ -14,7 +14,7 @@ namespace Uni_Shop.ModelDBs
         }
 
         public int MaLoaiNongSan { get; set; }
-        [Required]
+        [Required(ErrorMessage ="Vui lòng nhập tên loại nông sản")]
         public string TenLoaiNongSan { get; set; }
 
         public virtual ICollection<NongSan> NongSans { get; set; }

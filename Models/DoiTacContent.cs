@@ -9,5 +9,6 @@ namespace Uni_Shop.Models
     {
         public DonXinDT donxinDT { get; set; }
         public NguoiDung nguoidung { get; set; }
+        public GianHang gianHang { get; set; }
     }
 }

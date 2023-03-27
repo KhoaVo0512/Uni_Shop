@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Uni_Shop.ModelDBs.NguoiDung>
+﻿@model IEnumerable<Uni_Shop.Models.NguoiDungContext>
 @using Uni_Shop.ModelDBs
 @{
     ViewData["Title"] = "Index";
@@ -10,62 +10,99 @@
         pager = ViewBag.Pager;
         pageNo = pager.CurrentPage;
     }
+    int stt = 0;
 }
-<h2>Danh sách người dùng</h2>
-<ol class="breadcrumb mb-4">
-    <li class="breadcrumb-item"><a style="color: black;" asp-action="Index" asp-area="Admin" asp-controller="Home">Trang chủ</a></li>
-    <li class="breadcrumb-item active">Danh sách người dùng</li>
-</ol>
-<table class="table" style="background:white">
-    <thead class="table-dark">
-        <tr>
-            <th>
-                Mã người dùng
-            </th>
-            <th>
-                Mã tài khoản
-            </th>
-            <th>
-                Tên người dùng
-            </th>
-            <th>
-                Địa chỉ
-            </th>
-            <th>
-                SĐT
-            </th>
-            <th>
-                Avatar
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaNguoiDung)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaTaiKhoan)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TenNguoiDung)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DiaChi)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Sdt)
-                </td>
-                <td>
-                    <img src="@Url.Content("/images/Users/" + item.Avatar)" style="width:45px; height:45px"  />
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+@*<div class="position-fixed d-none" id="sieuchua" style="text-align: center; background-color: #F8F8F8; height: 100px; width: 400px; left: 700px; top: 270px;">
+    <div id="chua" class="">
+
+    </div>
+    <button class="btn btn-outline-primary position-absolute" id="huy" style=" width: 70px; right: 120px; top: 50px;">Hủy</button>
+</div>
+*@
+<div class="container">
+    <div class="d-flex justify-content-between">
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item "><a style="color: black;" asp-action="Index" asp-area="Admin" asp-controller="Home">Trang chủ</a></li>
+            <li class="breadcrumb-item active">Danh sách người dùng</li>
+        </ol>
+        <div class="justify-content-end">
+            <form asp-controller="NguoiDung" asp-action="Index">
+                <span class="btn-group">
+                    <input class="form-control" type="text" name="SearchText" placeholder="Tìm kiếm" />
+                    <input class="p-1 ml-2 btn btn-sm btn-info" type="submit" value="Search" />
+                </span>
+            </form>
+            <a class="btn btn-success mt-2" type="submit" asp-action="KhuyenMai" asp-controller="NguoiDung">Gửi thông tin khuyến mãi</a>
+        </div>
+    </div>
+    <div id="res">
+        <table class="table" style="background:white">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        STT
+                    </th>
+                    <th>
+                        Tên người dùng
+                    </th>
+                    <th>
+                        Địa chỉ
+                    </th>
+                    <th>
+                        SĐT
+                    </th>
+                    <th>
+                        Tên đăng nhập
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Avatar
+                    </th>
+                    <th>
+                        Hành động
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    stt = stt + 1;
+                    <tr>
+                        <td>
+                            @stt
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NguoiDung.TenNguoiDung)
+                        </td>
+                        <td style="width: 15%">
+                            @Html.DisplayFor(modelItem => item.NguoiDung.DiaChi)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NguoiDung.Sdt)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TaiKhoan.TenDangNhap)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TaiKhoan.Email)
+                        </td> 
+                       
+                        <td>
+                            <img src="@Url.Content("/images/Users/user.png")" style="width:45px; height:45px" />
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-outline-success" id="duyet" onclick="Duyet(@Html.DisplayFor(modelItem => item.TaiKhoan.MaTaiKhoan))">Xét duyệt</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    
+</div>
+
 <div class="container">
     @if (pager.TotalPages > 0)
     {
@@ -96,5 +133,23 @@
             }
         </ul>
     }
-
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script>
+    async function Duyet(id) {
+        
+            await $.ajax({
+                type: 'POST',
+                url: '/Admin/NguoiDung/Duyet/'+id,
+                data: { id: id },
+                success: function (result) {
+                   window.location.reload();
+                   alert("Tài khoản này đã lên quyền admin");
+                  
+                },
+                error: function (result) {
+                    alert("error!");  //
+                }
+            });
+        }
+</script>

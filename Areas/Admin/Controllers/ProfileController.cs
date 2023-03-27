@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -17,15 +18,29 @@ namespace Uni_Shop.Areas.Admin.Controllers
     [Area("Admin")]
     public class ProfileController : Controller
     {
-        TN230Context db = new TN230Context();
+        TN230_V1Context db = new TN230_V1Context();
+        private readonly INotyfService _notyf;
+        public ProfileController (INotyfService notyf)
+        {
+            _notyf = notyf;
+        }
         //[Authorize]
         public IActionResult Index()
         {
             if (HttpContext.Session.GetInt32("Chan") != 1)
             {
                 int session = (int)HttpContext.Session.GetInt32("taikhoan");
-                var kh = (from s in db.NhanViens where s.MaTaiKhoan == session select s.Avatar).Single();
-                TempData["data"] = kh;
+                var kh1 = db.NhanViens.Where(s => s.MaTaiKhoan == session);
+                if (kh1 == null)
+                {
+                    TempData["data"] = "";
+                }
+                else
+                {
+                    var kh = (from s in db.NhanViens where s.MaTaiKhoan == session select s.Avatar).Single();
+                    TempData["data"] = kh;
+                }
+
             }
             else
             {
@@ -116,11 +131,22 @@ namespace Uni_Shop.Areas.Admin.Controllers
             TempData["data"] = kh;
             if (ModelState.IsValid)
             {
-                
                 TempData["maNV"] = HttpContext.Session.GetInt32("maNV"); 
                 ViewBag.maNV = HttpContext.Session.GetInt32("maNV");
+                var current_pw = EncodeManager.HashPasswordV2(model.CurrenPassword);
+                TaiKhoan res = new TaiKhoan();
                 var tk = db.TaiKhoans.FirstOrDefault(u => u.MaTaiKhoan == HttpContext.Session.GetInt32("taikhoan"));
-                tk.MatKhau = model.NewPassword;
+                var mahoa = EncodeManager.VerifyHashedPassword(tk.MatKhau, model.CurrenPassword);
+                if (mahoa == PasswordVerificationResult.Success)
+                {
+                    tk.MatKhau = EncodeManager.HashPasswordV2(model.NewPassword).ToString();
+                    _notyf.Success("Mật khẩu của bạn thay đổi thành công!");
+                }   
+                else
+                {
+                    ModelState.AddModelError("CurrenPassword", "Mật khẩu cũ không chính xác! ");
+                    return View(model);
+                }
                 db.SaveChanges();
                 ViewBag.khoa = true;
                 return RedirectToAction("index");

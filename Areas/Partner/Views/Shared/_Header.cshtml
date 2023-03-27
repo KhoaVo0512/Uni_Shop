@@ -41,49 +41,16 @@
 
             <!-- Center elements -->
             <ul class="navbar-nav flex-row d-none d-md-flex">
-                <li class="nav-item me-3 me-lg-1 active">
-                    <a class="nav-link" href="/">
+                <li>
+                    <a class="nav-link" asp-action="Filter1" asp-area="Partner" asp-controller="QuanLyNS">
                         <span>Trang chủ</span>
                     </a>
                 </li>
-                @* Category *@
-                <li class="nav-item dropdown me-3 me-lg-1">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Danh mục
+                <li>
+                    <a class="nav-link" asp-action="giaodiendoitac" asp-area="Partner" asp-controller="Home">
+                        <span>Danh sách đơn đặt</span>
                     </a>
-                    <ul class="dropdown-menu " aria-labelledby="navbarDarkDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Rau xanh</a></li>
-                        <li><a class="dropdown-item" href="#">Các loại củ và hạt</a></li>
-                        <li><a class="dropdown-item" href="#">Trái cây ăn quả</a></li>
-                        <li><a class="dropdown-item" href="#">Đồ khô</a></li>
-                        <li><a class="dropdown-item" href="#">Lương thực</a></li>
-                    </ul>
-                </li>
-                @* Services *@
-                <li class="nav-item dropdown me-3 me-lg-1">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dịch vụ
-                    </a>
-                    <ul class="dropdown-menu " aria-labelledby="navbarDarkDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Về chúng tôi</a></li>
-                        <li><a class="dropdown-item" href="#">Gửi feedback</a></li>
-                        <li><a class="dropdown-item" href="#">Báo cáo</a></li>
-                        <li><a class="dropdown-item" href="#">Trở thành đối tác</a></li>
-                        <li><a class="dropdown-item" href="#">Hỗ trợ </a></li>
-                    </ul>
-                </li>
-
-                <li class="nav-item dropdown me-3 me-lg-1">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Đối tác
-                    </a>
-                    <ul class="dropdown-menu " aria-labelledby="navbarDarkDropdownMenuLink">
-                        <li><a class="dropdown-item" asp-action="Index" asp-area="Partner" asp-controller="Home">Trang chủ</a></li>
-                        <li><a class="dropdown-item" asp-action="dondat" asp-area="Partner" asp-controller="DonDat">Danh sách đơn đặt</a></li>
-                        <li><a class="dropdown-item" asp-action="Create" asp-area="Partner" asp-controller="Home">Thêm nông sản</a></li>
-                        <li><a class="dropdown-item" asp-action="gianhang" asp-area="Partner" asp-controller="Home">Gian hàng cá nhân</a></li>
-                    </ul>
-                </li>
+                </li>            
             </ul>
             <!-- Center elements -->
             <!-- Right elements -->

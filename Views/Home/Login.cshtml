@@ -26,35 +26,54 @@
                                 {
                                     @Html.AntiForgeryToken()
                                     @Html.ValidationSummary(true, null, new { @class = "alert-error" })
-                            <fieldset>
-                                <div class="form-group my-3">
-                                    @Html.TextBoxFor(model => model.TenDangNhap, new { @class = "form-control", @placeholder = "Tên đăng nhập", @autofocus = "autofocus" })
-                                </div>
-                                <div class="form-group my-3">
-                                    @Html.TextBoxFor(model => model.MatKhau, new { @class = "form-control", @placeholder = "Mật khẩu", @type = "password" })
-                                </div>
-                                <div class="checkbox my-3">
-                                    <label>
-                                        @Html.CheckBoxFor(model => model.Remember)
-                                        Ghi nhớ đăng nhập
-                                    </label>
-                                </div>
-                                <div>
-                                    <button class="button-29 mb-5" role="button" type="submit"> Đăng nhập</button>
+                                    <fieldset>
+                                        <div class="form-group my-3">
+                                            @Html.TextBoxFor(model => model.TenDangNhap, new { @class = "form-control", @placeholder = "Tên đăng nhập", @autofocus = "autofocus" })
+                                        </div>
+                                        <div class="form-group my-3">
+                                            @Html.TextBoxFor(model => model.MatKhau, new { @class = "form-control", @placeholder = "Mật khẩu", @type = "password" })
+                                        </div>
+                                        <div class="checkbox my-3">
+                                            <label>
+                                                @Html.CheckBoxFor(model => model.Remember)
+                                                Ghi nhớ đăng nhập
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <button class="button-29 mb-5" role="button" type="submit"> Đăng nhập</button>
 
-                                </div>
-                                <!-- Change this to a button or input when using this as a form -->
-                                </fieldset>
+                                        </div>
+                                        <!-- Change this to a button or input when using this as a form -->
+                                    </fieldset>
                                 }
-                            <div class="d-flex align-content-center justify-content-between">
-                                <div class="text-center">
-                                    <a class="small" href="forgot-password.html">Quên mật khẩu?</a>
+                                <div class="d-flex align-content-center justify-content-between">
+                                    <div class="text-center">
+                                        <a class="small" href="forgot-password.html">Quên mật khẩu?</a>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="small" href="/register">Tạo tài khoản mới!</a>
+                                    </div>
                                 </div>
-                                <div class="text-center">
-                                    <a class="small" href="/register">Tạo tài khoản mới!</a>
+                                <p class="d-flex justify-content-center">HOẶC</p>
+                                <ul class="d-flex justify-content-between">
+                                    <li>
+                                        <a asp-action="SigninFacebook" asp-controller="Home" class="facebook-login-registration">
+                                            <img style="width:20px; height:20px" src="~/images/fb_logo.png" alt="">
+                                            <span>Đăng nhập với Facebook</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a asp-action="Signin" asp-controller="Home" class="google-login-registration">
+                                            <img style="width:20px; height:20px" src="~/images/gg_logo.png" alt="">
+                                            <span>Đăng nhập với Google</span>
+                                        </a>x
+                                    </li>
+                                </ul>
+                                <div class="container mt-5">
+                                    <p class="login">
+                                        Chưa có tài khoản? <a asp-action="Register">Đăng ký</a>
+                                    </p>
                                 </div>
-                            </div>
-                                
                             </div>
                         </div>
                     </div>

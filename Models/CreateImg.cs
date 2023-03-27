@@ -9,10 +9,10 @@ namespace Uni_Shop.Models
     public class CreateImg
     {
         public NongSan nongsandetail { get; set; }
-        public AnhN anhnsdetail { get; set; }
+       
 
         public DonViTinh donvitinhdetail { get; set; }
-        public LoaiNongSan loainongsandeltail { get; set; }
+    
         public GianHang gianhangdetail { get; set; }
 
 

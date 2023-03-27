@@ -1,0 +1,304 @@
+﻿
+@model IEnumerable<Uni_Shop.ModelDBs.Trang_Thai>
+@using Uni_Shop.ModelDBs
+@{
+    ViewData["Title"] = "giaodiendoitac";
+    Layout = "~/Areas/Partner/Views/Shared/_Layout.cshtml";
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+    double total = 0;
+}
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+<!-- Breadcrumb Section Begin -->
+<style>
+    /* width */
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+    .image {
+        position: relative;
+    }
+
+    .brand {
+        position: absolute;
+        top: 100px;
+        left: 44%;
+        text-align: center;
+    }
+
+        .brand > h2 {
+            color: white;
+            font-size: 3rem;
+            font-weight: bolder;
+        }
+
+        .brand > p {
+            color: white;
+            font-weight: bolder;
+        }
+
+    .department {
+        font-weight: bold;
+    }
+
+    .buydate {
+        font-size: 0.7rem;
+    }
+
+    .menu {
+        padding: 0.68rem;
+    }
+
+    .navbar-content {
+        overflow: hidden scroll;
+        /* width */
+    }
+</style>
+
+<div>
+    <div>
+        <img src="~/images/breadcrumb.jpg" style="width: 100%; height: 130px;" class="image" />
+        <div class="brand">
+            @*@foreach (var item in ViewBag.doitac)
+        {
+            <h2>
+                @item.gianhangdetail.TenGianHang
+            </h2>
+            <p>
+                @item.nguoidungdetail.TenNguoiDung
+            </p>
+            break;
+        }*@
+            <h2>
+                @ViewBag.tengianhang
+            </h2>
+            <p>
+                @ViewBag.tennguoidung
+            </p>
+
+        </div>
+        <div class="container row border text-uppercase text-center align-items-center shadow-lg menu" style="cursor: pointer; margin: 0 auto;padding:0">
+            <a class="col-3" style="border:0; font-size:16px; padding:8px;  background:#fff;" asp-area="Partner" asp-action="giaodiendoitac" asp-controller="Home">
+                Quản lí đơn đặt
+            </a>
+            <a class="col-3" style="border:0; font-size:16px; padding:8px; background:#fff;" asp-area="Partner" asp-action="Filter1" asp-controller="QuanLyNS">
+                Quản lí nông sản
+            </a>
+        </div>
+    </div>
+
+    <div id="res-body" class=" container mt-xl-5">
+        <div class="row" style="margin-bottom: 3.4rem">
+            <div class="col-2 border shadow-lg navbar-content">
+                <h4 class="department">Trạng thái</h4>
+                <hr />
+                <div class="list-categories" style="cursor: pointer;">
+                    @foreach (var item in Model)
+                    {
+                        <p style="padding:5px; margin:0" class="loai" id="@Html.DisplayFor(modelItem =>item.Ma_Trang_Thai)"><a onclick="ShowDT(@Html.DisplayFor(modelItem =>item.Ma_Trang_Thai))">@Html.DisplayFor(modelItem => item.Ten_Trang_Thai)</a></p>
+                    }
+
+                </div>
+            </div>
+            <div class="col-10 ">
+
+                <div class="row mt-xl-4">
+                    <p class="text-uppercase" style="font-size: 1.4rem">
+                        Danh sách đơn đặt
+                    <p />
+                </div>
+                <div id="res">
+                    <div class="row">
+                        @foreach (var item in ViewBag.doitac)
+                        {
+                            <div class="col-4 mt-2">
+                                <div class="card ">
+                                    <div class="card-body">
+                                        <p class="card-title" style="font-size: 1.28rem; font-weight: bold">
+                                            @item.dondatdetail.MaGd@item.nongsandetail.MaNongSan
+                                        </p>
+                                        <div class="d-flex align-items-center justify-content-between">
+
+                                            <p class="card-text text-danger" style="font-weight: 600">@item.hinhthucdetail.TenHTTT</p>
+                                            <button class="btn btn-danger chitiet" style=" font-weight:bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample-@item.dondatdetail.MaGd-@item.nongsandetail.MaNongSan" aria-expanded="false" aria-controls="collapseExample-@item.dondatdetail.MaGd-@item.nongsandetail.MaNongSan">Chi tiết</button>
+
+                                        </div>
+                                        <p class="card-text buydate">@item.dondatdetail.NgayDatHang</p>
+                                        <div class="collapse multi-collapse" id="collapseExample-@item.dondatdetail.MaGd-@item.nongsandetail.MaNongSan">
+                                            <div class="card card-body">
+
+
+                                                <select onchange="changeDD(@item.dondatdetail.MaDonDat, value)" value="@item.dondatdetail.MaTrangThai" id="@item.dondatdetail.MaTrangThai" name="@item.dondatdetail.MaTrangThai" asp-items="ViewBag.Compani1"></select>
+                                                @*<span asp-validation-for="@item.dondatdetail.Ma_Trang_Thai"></span>*@
+                                                <div class="container card shadow-sm " style="height:100%">
+                                                    <h5 class="mt-2 p-2">Thông tin chi tiết</h5>
+                                                    <div class="d-flex flex-row justify-content-between">
+                                                        <h6>Sản phẩm</h6>
+                                                        <h6>Giá (VNĐ)</h6>
+                                                    </div>
+
+                                                    <div class="d-flex flex-row justify-content-between">
+                                                        <p>@item.nongsandetail.TenNongSan x @item.chitietdetail.SoLuongDat </p>
+                                                        <p>
+                                                            @{ double val = Convert.ToDouble(item.nongsandetail.Gia); }
+                                                            @val.000
+                                                        </p>
+                                                        <div class="hidden">
+                                                            @{ double val2 = Convert.ToDouble(item.nongsandetail.Gia) * item.chitietdetail.SoLuongDat;
+                                                                total = val2;
+                                                            }
+                                                            @val2
+                                                        </div>
+                                                    </div>
+
+                                                    <hr class="hr" />
+                                                    <div class="d-flex flex-row justify-content-between mb-2">
+                                                        <p><b>Tổng cộng</b> </p>
+
+                                                        <p>
+                                                            @total
+                                                        </p>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="container mt-5">
+                        @if (pager.TotalPages > 0)
+                        {
+                            <ul class="pagination justify-content-center">
+                                @if (pager.CurrentPage > 1)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" asp-controller="Home" asp-action=@ViewData["Title"] asp-route-pg="1">Đầu</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" asp-controller="Home" asp-action=@ViewData["Title"] asp-route-pg="@(pager.CurrentPage - 1)">Trước</a>
+                                    </li>
+                                }
+                                @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                                {
+                                    <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
+                                        <a class="page-link" asp-controller="Home" asp-action=@ViewData["Title"] asp-route-pg="@pge">@pge</a>
+                                    </li>
+                                }
+                                @if (pager.CurrentPage < pager.TotalPages)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" asp-controller="Home" asp-action=@ViewData["Title"] asp-route-pg="@(pager.CurrentPage +1)">Sau</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" asp-controller="Home" asp-action=@ViewData["Title"] asp-route-pg="@(pager.TotalPages)">Cuối</a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Breadcrumb Section End -->
+
+<script>
+
+    let id = document.getElementById("1");
+    id.classList.add('active');
+    let loai = document.getElementsByClassName("loai");
+
+    async function ShowDT(maloai) {
+        for (i = 0; i < loai.length; i++) {
+            if (loai[i].classList.contains('active')) {
+                loai[i].classList.remove('active');
+            }
+        }
+        let id1 = document.getElementById(maloai);
+        id1.classList.add('active');
+        await $.ajax({
+            type: 'POST', url: 'list2/{maloai}', data: { maloai: maloai }, success: function (response) {
+                $("#res").html(response);
+            },
+            error: function (response) {
+                alert("error!");  //
+                alert(response);
+            }
+        });
+    }
+
+
+    async function changeDD(madondat, trangthaiid) {
+        //console.log test du lieu tren f12
+        /*console.log(trangthaiid);*/
+        await $.ajax({
+            type: "POST", url: '/Partner/DonDat/EditDD', data: { madondat: madondat, trangthaiid: trangthaiid }, success: function (response) {
+                if (response.success) {
+                }
+            },
+            error: function (reponse) {
+                alert("error!");
+            }
+        });
+        location.reload();
+    }
+
+    //async function ShowCT(madd) {
+    //    /* alert(madd);*/
+    //    $(madd).click(function () {
+    //        $("#modal-updatebigsp").addClass('d-block');
+    //    },
+    //        await $.ajax({
+    //            type: 'POST', url: '/Partner/Home/chitietdd/{madd}', data: { madd: madd }
+    //        })
+    //    )
+    //}
+
+
+   @* $('#huy-update').click(function () {
+        $("#modal-updatebigsp").removeClass('d-block');
+    })
+    $('.chitiet').each(function (index, value) {
+
+        $(value).click(function () {
+            $("#modal-updatebigsp").addClass('d-block');
+
+            let updatesp = "/Partner/Home/chitietdd/" + $(value).val();
+            console.log($(value).val());
+            $("#modal-updatesp").load(updatesp);
+
+        })
+    })*@
+
+</script>

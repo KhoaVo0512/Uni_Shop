@@ -2,49 +2,55 @@
 
 @{
     ViewData["Title"] = "EditImage";
-    Layout = "~/Areas/Partner/Views/Shared/_Layout.cshtml";
+    Layout = null;
 }
+<style>
+    .img-edit {
+        width: 80%;
+        height: 400px;
+        object-fit: contain;
+    }
 
-<hr />
-<div class="row">
-    <div class="col-lg-4">
-        <a asp-action="Index" asp-controller="Home" asp-area="DoiTac">
-            <i class="fa fa-home"></i> Giang hàng chung
-        </a> |
-        <a asp-action="gianghang" asp-controller="Home" asp-area="DoiTac">
-            <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
-            Trở Về
-        </a>
-    </div>
-</div>
-<hr />
-<div class="row">
+    .wrapper-image {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+    }
 
-    <div class="col-md-4">
-        <form asp-action="Updateimg" asp-controller="Home" asp-area="Partner" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="MaAnh" />
-            <div class="d-flex">
-                <div class="form-group" style="padding:20px; font-size:18px">
+    .form-edit {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+</style>
+<div class="basic-form">
+
+    <form asp-action="Updateimg" asp-controller="Home" asp-area="Partner" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="MaAnh" />
+        <div class="row border border-5 shadow-lg">
+            <div class="form-group col-6" style="padding:20px; font-size:18px">
+                <div class="wrapper-image">
                     <label>Hình ảnh:</label>
-                    <img src="@Url.Content("~/Myfiles/" + @ViewBag.img)" />
-                </div>
-                <div class="form-group" style="padding: 20px; font-size: 18px">
-                    <label>Link ảnh:</label>
-                    <input asp-for="LinkAnh" class="form-control mt-1" disabled="disabled" />
-                    <span asp-validation-for="LinkAnh" class="text-danger mt-1"></span>
-                    Chọn ảnh nông sản:
-                    <input type="file" name="myfile" asp-for="LinkAnh" placeholder="Chọn hình ảnh nông sản" required />
-                    Mã nông sản:
-                    <select asp-for="MaNongSan" class="form-control mt-1" asp-items="ViewBag.temp5"></select>
-                    <span asp-validation-for="MaNongSan" class="text-danger"></span>
-                    <input type="submit" value="Save" class="btn btn-primary mt-3" />
+                    <img src="@Url.Content("~/Myfiles/" + @ViewBag.img)" class="img-edit" />
                 </div>
             </div>
-        </form>
-    </div>
+            <div class="form-group col-6 form-edit">
+                <label>Link ảnh:</label>
+                <input asp-for="LinkAnh" class="form-control mt-1" disabled="disabled" />
+                <span asp-validation-for="LinkAnh" class="text-danger mt-1"></span>
+                Chọn ảnh nông sản:
+                <input type="file" name="myfile" asp-for="LinkAnh" placeholder="Chọn hình ảnh nông sản" required /><br />
+                Mã nông sản:
+                <select asp-for="MaNongSan" class="form-control mt-1" asp-items="ViewBag.temp5" disabled></select>
+                <select hidden asp-for="MaNongSan" class="form-control mt-1" asp-items="ViewBag.temp5" ></select>
+                <span asp-validation-for="MaNongSan" class="text-danger"></span>
+                <input type="submit" value="Save" class="btn btn-primary mt-3" />
+            </div>
+        </div>
+    </form>
+
 </div>
 
-<script>
-    console.log(LinkAnh)
-</script>

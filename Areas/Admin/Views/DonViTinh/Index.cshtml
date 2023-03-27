@@ -18,12 +18,11 @@
     <button class="btn btn-outline-primary position-absolute  " id="huy" style=" width: 70px; right: 120px; top: 50px;">Hủy</button>
 </div>
 <div class="container">
-    <h1 class="mt-4">Danh sách đơn vị tính</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a style="color: black;" asp-action="Index" asp-area="Admin" asp-controller="Home">Trang chủ</a></li>
         <li class="breadcrumb-item active">Danh sách đơn vị tính</li>
     </ol>
-    <button class="btn btn-outline-primary" style="margin-bottom:20px">@Html.ActionLink("Thêm đơn vị tính", "Create")</button>
+    <button class="button-29" style="margin-bottom:20px">@Html.ActionLink("Thêm đơn vị tính", "Create")</button>
     <table class="table" style="background:white">
         <thead class="table-dark">
             <tr>
@@ -95,7 +94,6 @@
         $('#huy').click(function () {
             $("#sieuchua").addClass('d-none');
         });
-
         $('.xoa').each(function (index, value) {
             $(value).click(function () {
                 $('#sieuchua').removeClass('d-none');

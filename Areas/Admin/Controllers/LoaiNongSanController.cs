@@ -12,9 +12,9 @@ namespace Uni_Shop.Areas.Admin.Controllers
     [Area("Admin")]
     public class LoaiNongSanController : Controller
     {
-        TN230Context db = new TN230Context();
+        TN230_V1Context db = new TN230_V1Context();
 
-        public IActionResult Index(int pg = 1)
+        public IActionResult Index(int pg = 1, string SearchText="")
         {
             if (HttpContext.Session.GetInt32("Chan") != 1)
             {
@@ -26,7 +26,16 @@ namespace Uni_Shop.Areas.Admin.Controllers
             {
                 return StatusCode(StatusCodes.Status403Forbidden);
             }
-            List<LoaiNongSan> loaiNongSans = db.LoaiNongSans.ToList();
+            List<LoaiNongSan> loaiNongSans;
+            if (SearchText !=null && SearchText != "")
+            {
+                loaiNongSans = (from s in db.LoaiNongSans where s.TenLoaiNongSan.Contains(SearchText) select s).ToList();
+            }
+            else
+            {
+                loaiNongSans = db.LoaiNongSans.ToList();
+            }
+           
             const int pageSize = 6;
             if (pg < 1)
                 pg = 1;

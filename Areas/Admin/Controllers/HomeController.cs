@@ -15,15 +15,24 @@ namespace Uni_Shop.Areas.Admin.Controllers
     [Area("Admin")]
     public class HomeController : Controller
     {
-        TN230Context db = new TN230Context();
+        TN230_V1Context db = new TN230_V1Context();
 
         public IActionResult Index()
         {
             if (HttpContext.Session.GetInt32("Chan") != 1)
             {
                 int session = (int)HttpContext.Session.GetInt32("taikhoan");
-                var kh = (from s in db.NhanViens where s.MaTaiKhoan == session select s.Avatar).Single();
-                TempData["data"] = kh;
+                var kh1 = db.NhanViens.Where(s=> s.MaTaiKhoan==session);
+                if (kh1 == null)
+                {
+                    TempData["data"] = "";
+                }
+                else
+                {
+                    var kh = (from s in db.NhanViens where s.MaTaiKhoan == session select s.Avatar).Single();
+                    TempData["data"] = kh;
+                }
+                   
             }
             else
             {

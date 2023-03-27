@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Uni_Shop.ModelDBs.NguoiDung>
+﻿@model IEnumerable<Uni_Shop.Models.DoiTacContent>
 @using Uni_Shop.ModelDBs
 @{
     ViewData["Title"] = "Index";
@@ -19,11 +19,21 @@
     <button class="btn btn-outline-primary position-absolute  " id="huy" style=" width: 70px; right: 120px; top: 50px;">Hủy</button>
 </div>
 <div class="container">
-    <h1 class="mt-4">Danh sách đối tác</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a style="color: black;" asp-action="Index" asp-area="Admin" asp-controller="Home">Trang chủ</a></li>
-        <li class="breadcrumb-item active">Danh sách đối tác</li>
-    </ol>
+    <div class="d-flex justify-content-between">
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a style="color: black;" asp-action="Index" asp-area="Admin" asp-controller="Home">Trang chủ</a></li>
+            <li class="breadcrumb-item active">Danh sách đối tác</li>
+        </ol>
+        <div class="justify-content-end">
+            <form asp-controller="DoiTac" asp-action="Index">
+                <span class="btn-group">
+                    <input class="form-control" type="text" name="SearchText" placeholder="Tìm kiếm" />
+                    <input class="p-1 ml-2 btn btn-sm btn-info" type="submit" value="Search" />
+                </span>
+
+            </form>
+        </div>
+    </div>
     <table class="table" style="background:white">
         <thead class="table-dark">
             <tr>
@@ -31,10 +41,10 @@
                     STT
                 </th>
                 <th>
-                    Mã người dùng
+                    Tên người dùng
                 </th>
                 <th>
-                    Tên người dùng
+                    Tên gian hàng
                 </th>
                 <th>
                     Địa chỉ
@@ -59,19 +69,19 @@
                         }
                     </th>
                     <td>
-                        @Html.DisplayFor(modelItem => item.MaNguoiDung)
+                        @Html.DisplayFor(modelItem => item.nguoidung.TenNguoiDung)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TenNguoiDung)
+                        @Html.DisplayFor(modelItem => item.gianHang.TenGianHang)
+                    </td>
+                    <td style="width:15%">
+                        @Html.DisplayFor(modelItem => item.nguoidung.DiaChi)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.DiaChi)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Sdt)
+                        @Html.DisplayFor(modelItem => item.nguoidung.Sdt)
                     </td>
                     <td class="text-center">
-                        <button class="btn btn-outline-danger xoa" value="@Html.DisplayFor(modelItem => item.MaNguoiDung)">Xóa</button>
+                        <button class="btn btn-outline-danger xoa" value="@Html.DisplayFor(modelItem => item.nguoidung.MaNguoiDung)">Xóa</button>
                     </td>
                 </tr>
             }

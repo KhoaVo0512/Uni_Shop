@@ -118,8 +118,8 @@
                             @item.dondatdetail.NgayDatHang
                         </td>
                         <td>
-                            <select asp-for=" @item.dondatdetail.Ma_Trang_Thai" value="@item.dondatdetail.Ma_Trang_Thai" id="@item.dondatdetail.Ma_Trang_Thai" name="@item.dondatdetail.Ma_Trang_Thai" asp-items="ViewBag.Compani" onchange="changeDD(@item.dondatdetail.MaDonDat, value)"></select>
-                            <span asp-validation-for="@item.dondatdetail.Ma_Trang_Thai"></span>
+                            <select asp-for=" @item.dondatdetail.MaTrangThai" value="@item.dondatdetail.MaTrangThai" id="@item.dondatdetail.MaTrangThai" name="@item.dondatdetail.MaTrangThai" asp-items="ViewBag.Compani" onchange="changeDD(@item.dondatdetail.MaDonDat, value)"></select>
+                            <span asp-validation-for="@item.dondatdetail.MaTrangThai"></span>
                         </td>
                         <td>
                             <select asp-for=" @item.dondatdetail.MaNguoiDung" asp-items="ViewBag.temp4" disabled="disabled"></select>

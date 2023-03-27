@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
@@ -11,20 +15,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using Uni_Shop.ModelDBs;
 using Uni_Shop.Models;
-using NHibernate.Linq;
 
 namespace Uni_Shop.Controllers
 {
     public class HomeController : Controller
     {
 
-        TN230Context db = new TN230Context();
+        TN230_V1Context db = new TN230_V1Context();
 
         private readonly ILogger<HomeController> _logger;
+        private readonly INotyfService _notyf;
+        //alert("@ViewBag.Message");
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, INotyfService notyf)
         {
             _logger = logger;
+            _notyf = notyf;
         }
 
         [Route("/", Name = "")]
@@ -36,7 +42,32 @@ namespace Uni_Shop.Controllers
             List<AnhN> anhs = db.AnhNs.ToList();
             List<LoaiNongSan> loainongsans = db.LoaiNongSans.ToList();
             List<DonViTinh> donViTinhs = db.DonViTinhs.ToList();
-            var nongsan = from s in nongsans
+            var nongsan = from n in nongsans
+                          join a in anhs on n.MaNongSan equals a.MaNongSan
+                          where n.TrangThai == 1
+                          select new NongSanContent
+                          {
+                              nongsandetail = n,
+                              anhnongsandeltail = a
+                          };
+            nongsan = nongsan.Take(16);
+            
+            return View(nongsan);
+        }
+
+        [Route("/filter", Name = "filter")]
+        public IActionResult Filter(int pg = 1, string SearchText = "")
+        {
+            List<LoaiNongSan> loainongsan = db.LoaiNongSans.ToList();
+            List<GianHang> gianhangs = db.GianHangs.ToList();
+            List<NongSan> nongsans = db.NongSans.ToList();
+            List<AnhN> anhs = db.AnhNs.ToList();
+            List<LoaiNongSan> loainongsans = db.LoaiNongSans.ToList();
+            List<DonViTinh> donViTinhs = db.DonViTinhs.ToList();
+            IEnumerable<NongSanContent> nongsan;
+            if (SearchText != "" && SearchText != null)
+            {
+                nongsan = from s in nongsans
                           join a in anhs on s.MaNongSan equals a.MaNongSan into table2
                           from a in table2.DefaultIfEmpty()
                           join g in gianhangs on s.MaGianHang equals g.MaGianHang into table0
@@ -44,7 +75,7 @@ namespace Uni_Shop.Controllers
                           join h in donViTinhs on s.MaDonViTinh equals h.MaDonViTinh into table1
                           from h in table1.DefaultIfEmpty()
                           join f in loainongsans on s.MaLoaiNongSan equals f.MaLoaiNongSan
-                          where s.TrangThai == 1
+                          where s.TenNongSan.Contains(SearchText)
                           select new NongSanContent
                           {
                               nongsandetail = s,
@@ -53,21 +84,51 @@ namespace Uni_Shop.Controllers
                               donvitinhdetail = h,
                               anhnongsandeltail = a
                           };
-            nongsan = nongsan.Take(16);
-            return View(nongsan);
+            } else
+            {
+                    nongsan = from s in nongsans
+                          join a in anhs on s.MaNongSan equals a.MaNongSan into table2
+                          from a in table2.DefaultIfEmpty()
+                          join g in gianhangs on s.MaGianHang equals g.MaGianHang into table0
+                          from g in table0.DefaultIfEmpty()
+                          join h in donViTinhs on s.MaDonViTinh equals h.MaDonViTinh into table1
+                          from h in table1.DefaultIfEmpty()
+                          join f in loainongsans on s.MaLoaiNongSan equals f.MaLoaiNongSan
+                          select new NongSanContent
+                          {
+                              nongsandetail = s,
+                              gianhangdetail = g,
+                              loainongsandeltail = f,
+                              donvitinhdetail = h,
+                              anhnongsandeltail = a
+                          };
+            }
+            
+            const int pageSize = 6;
+            if (pg < 1)
+                pg = 1;
+            int recsCount = nongsan.Count();
+            var pager = new Pager(recsCount, pg, pageSize);
+            int recSkip = (pg - 1) * pageSize;
+            var data = nongsan.Skip(recSkip).Take(pager.PageSize).ToList();
+            this.ViewBag.Pager = pager;
+            ViewBag.nongsan = data;
+            return View(loainongsan);
         }
+
         [Route("/list", Name = "list")]
         public IActionResult List()
         {
             List<LoaiNongSan> loainongsan = db.LoaiNongSans.ToList();
+            
             return View(loainongsan);
         }
-        [Route("/list/{maloai}")]
-        public IActionResult ShopList(int maloai)
+        [Route("/list/{maloai}", Name = "ShopList")]
+        public IActionResult ShopList(int maloai, int pg=1)
         {
             int i = 1;
             List<GianHang> gianhangs = db.GianHangs.ToList();
-            List<NongSan> nongsans = db.NongSans.Where(x => x.MaLoaiNongSan == maloai).ToList();
+            List<NongSan> nongsans = db.NongSans.Where(x => x.MaLoaiNongSan == maloai).ToList();        
             List<AnhN> anhs = db.AnhNs.ToList();
             List<LoaiNongSan> loainongsans = db.LoaiNongSans.ToList();
             List<DonViTinh> donViTinhs = db.DonViTinhs.ToList();
@@ -88,6 +149,15 @@ namespace Uni_Shop.Controllers
                               donvitinhdetail = h,
                               anhnongsandeltail = a
                           };
+            const int pageSize = 6;
+            if (pg < 1)
+                pg = 1;
+            int recsCount = nongsan.Count();
+            var pager = new Pager(recsCount, pg, pageSize);
+            int recSkip = (pg - 1) * pageSize;
+            var data = nongsan.Skip(recSkip).Take(pager.PageSize).ToList();
+            this.ViewBag.Pager = pager;
+            ViewBag.nongsan = data;
             return View(nongsan);
         }
 
@@ -119,9 +189,21 @@ namespace Uni_Shop.Controllers
                     ModelState.AddModelError("", "Vui lòng nhập mật khẩu! ");
                     return View();
                 }
-                TaiKhoan res = db.TaiKhoans.Where(s => s.TenDangNhap == model.TenDangNhap && s.MatKhau == model.MatKhau).SingleOrDefault();
+                TaiKhoan res = new TaiKhoan();
+                var tk = db.TaiKhoans.Where(s => s.TenDangNhap == model.TenDangNhap.Trim()).SingleOrDefault();
+                var mahoa = EncodeManager.VerifyHashedPassword(tk.MatKhau, model.MatKhau);
+                if (mahoa == PasswordVerificationResult.Success)
+                   res = db.TaiKhoans.Where(s => s.TenDangNhap == model.TenDangNhap).SingleOrDefault();
+                else
+                   res = null;
                 if (res != null)
                 {
+                    if(res.TrangThai == 0)
+                    {
+                        _notyf.Error("Tài khoản chưa được kích hoạt! Kiểm tra email và đăng nhập lại sau");
+                        return View();
+                    }
+                    _notyf.Success("Chào mừng bạn quay lại với UniShop!");
                     HttpContext.Session.SetInt32("Chan", 1);
                     if (model.Remember)
                     {
@@ -130,21 +212,21 @@ namespace Uni_Shop.Controllers
                     if (res.MaQuyen == 1)
                     {
                         HttpContext.Session.SetInt32("Chan", 2);
-                        var maNV = db.NhanViens.FirstOrDefault(u => u.MaTaiKhoan == res.MaTaiKhoan).MaNhanVien;
-                        var Avatar = db.NhanViens.FirstOrDefault(u => u.MaTaiKhoan == res.MaTaiKhoan).Avatar;
+                        HttpContext.Session.SetInt32("maTK", res.MaTaiKhoan);
                         HttpContext.Session.SetString("username", model.TenDangNhap);
-                        HttpContext.Session.SetInt32("maNV", maNV);
-                        HttpContext.Session.SetString("Avatar", Avatar);
                         HttpContext.Session.SetInt32("taikhoan", res.MaTaiKhoan);
                         return RedirectToAction("Index", "Home", new { area = "Admin" });
                     }
                     if (res.MaQuyen == 3)
                     {
+                        HttpContext.Session.SetInt32("maTK", res.MaTaiKhoan);
                         HttpContext.Session.SetString("taikhoan", res.MaTaiKhoan.ToString());
                         HttpContext.Session.SetString("username", model.TenDangNhap);
-                        return RedirectPermanentPreserveMethod("/Partner");
+                        return RedirectToAction("Filter1", "QuanLyNS", new { area = "Partner" });
                     }
                     HttpContext.Session.SetInt32("maTK", res.MaTaiKhoan);
+                    var manguoidung = (from s in db.NguoiDungs where s.MaTaiKhoan == res.MaTaiKhoan select s.MaNguoiDung).FirstOrDefault();
+                    HttpContext.Session.SetInt32("mand",manguoidung);
                     HttpContext.Session.SetString("username", model.TenDangNhap);
                     int count = db.GioHangs.Where(s => s.MaTaiKhoan == res.MaTaiKhoan).Count();
                     HttpContext.Session.SetInt32("countCart", count);
@@ -152,6 +234,7 @@ namespace Uni_Shop.Controllers
                 }
                 else
                 {
+                    
                     ModelState.AddModelError("", "Thông tin đăng nhập không đúng! ");
                 }
             }
@@ -160,6 +243,15 @@ namespace Uni_Shop.Controllers
                 ModelState.AddModelError("", "Thông tin đăng nhập nhập rỗng! ");
             }
             return View();
+        }
+        [Route("validate/{id:int}")]
+        public async Task<IActionResult> validate([FromRoute] int id)
+        {
+            TaiKhoan res = db.TaiKhoans.Where(s => s.MaTaiKhoan == id).SingleOrDefault();
+            res.TrangThai = 1;
+            db.Update(res);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index", "Home");
         }
         [Route("register")]
         [HttpGet]
@@ -180,25 +272,29 @@ namespace Uni_Shop.Controllers
                 ViewBag.error = "Tên đăng nhập đã tồn tại! ";
                 return View();
             }
+            tk.MatKhau = Convert.ToBase64String(EncodeManager.HashPasswordV2(tk.MatKhau));
+            tk.TrangThai = 0;
             tk.MaQuyen = 2;
             if (ModelState.IsValid)
             {
                 db.Add(tk);
                 await db.SaveChangesAsync();
-
                 NguoiDung nd = new NguoiDung();
                 nd.MaTaiKhoan = tk.MaTaiKhoan;
+                HttpContext.Session.SetInt32("matktemp", tk.MaTaiKhoan);
+                int id = HttpContext.Session.GetInt32("matktemp").Value;
                 db.Add(nd);
                 await db.SaveChangesAsync();
-
-                return RedirectPermanentPreserveMethod("/Login");
+                var result = new EmailController().SendMail("UniShop-Validate Account", "validate_account", new string[1] { tk.Email}, id, null, null);
+                _notyf.Success("Chào mừng bạn đến với UniShop! Vui lòng kiểm tra email và kích hoạt tài khoản nhé");
+                return Redirect("/Login");
             }
             return View();
         }
 
         [Route("Logout")]
         [HttpGet]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
             HttpContext.Session.Remove("remember");
             HttpContext.Session.Remove("username");
@@ -206,7 +302,7 @@ namespace Uni_Shop.Controllers
 
             //Response.Cookies.Delete("Khoa");
             Response.Cookies.Delete(".AspNetCore.Session");
-
+            await HttpContext.SignOutAsync();
             return RedirectToAction("login");
         }
 
@@ -241,14 +337,16 @@ namespace Uni_Shop.Controllers
         [Route("addcart/{productid:int}", Name = "addcart")]
         public async Task<IActionResult> AddToCart([FromRoute] int productid)
         {
-            if (HttpContext.Session.GetString("username") == null)
+            
+            if (HttpContext.Session.GetInt32("maTK") == null)
             {
                 return RedirectToAction("login");
             }
-            GioHang cartItem = (from s in db.GioHangs where s.MaNongSan == productid select s).FirstOrDefault();
+            var tk = (int)HttpContext.Session.GetInt32("maTK").Value;
+            GioHang cartItem = (from s in db.GioHangs where s.MaNongSan == productid where s.MaTaiKhoan==tk select s).FirstOrDefault();
             if (cartItem != null)
             {
-                cartItem.SL++;
+                cartItem.Sl++;
                 cartItem.MaNongSan = productid;
                 cartItem.MaTaiKhoan = (int)HttpContext.Session.GetInt32("maTK").Value;
                 if (ModelState.IsValid)
@@ -260,7 +358,7 @@ namespace Uni_Shop.Controllers
             else
             {
                 cartItem = new GioHang();
-                cartItem.SL = 1;
+                cartItem.Sl = 1;
                 cartItem.MaNongSan = productid;
                 cartItem.MaTaiKhoan = (int)HttpContext.Session.GetInt32("maTK").Value;
                 if (ModelState.IsValid)
@@ -279,7 +377,8 @@ namespace Uni_Shop.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateCart([FromForm] int productid, [FromForm] int quantity)
         {
-            var cartItem = (from s in db.GioHangs where s.MaNongSan == productid select s).FirstOrDefault();
+            var tk = (int)HttpContext.Session.GetInt32("maTK").Value;
+            var cartItem = (from s in db.GioHangs where s.MaNongSan == productid where s.MaTaiKhoan==tk select s).FirstOrDefault();
 
             if (cartItem != null)
             {
@@ -293,7 +392,7 @@ namespace Uni_Shop.Controllers
                 }
                 else
                 {
-                    cartItem.SL = quantity;
+                    cartItem.Sl = quantity;
                     db.Update(cartItem);
                     await db.SaveChangesAsync();
                 }
@@ -306,7 +405,8 @@ namespace Uni_Shop.Controllers
         [Route("checkout/{total:double}", Name = "checkout")]
         public IActionResult Checkout([FromRoute] double total)
         {
-            if(HttpContext.Session.GetString("username") == null)
+            HttpContext.Session.SetInt32("thanhtien", (Int32)total);
+            if (HttpContext.Session.GetString("username") == null)
             {
                 return RedirectToAction("login");
             }
@@ -322,7 +422,7 @@ namespace Uni_Shop.Controllers
                        {
                            nongsandetail = n,
                            anhnongsandeltail = a,
-                           SL = (int)g.SL
+                           SL = (int)g.Sl
 
                        };
             NguoiDung nguoidungcontent = (from s in db.NguoiDungs where s.MaTaiKhoan == (int)HttpContext.Session.GetInt32("maTK").Value select s).FirstOrDefault();
@@ -334,7 +434,7 @@ namespace Uni_Shop.Controllers
             return View(checkout);
         }
         /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
-        [Route("/addDonHang", Name = "addDonHang")]
+       /* [Route("/addDonHang", Name = "addDonHang")]
         [HttpPost]
         public async Task<IActionResult> AddDonHang()
         {
@@ -365,7 +465,7 @@ namespace Uni_Shop.Controllers
             ViewBag.Message = "Cập nhật đơn hàng thành công! ";
 
             return Redirect("/");
-        }
+        }*/
         // Hiện thị giỏ hàng
         [Route("/cart", Name = "cart")]
         public IActionResult Cart()
@@ -386,7 +486,7 @@ namespace Uni_Shop.Controllers
                        {
                            nongsandetail = n,
                            anhnongsandeltail = a,
-                           SL = (int)g.SL
+                           SL = (int)g.Sl
 
                        };
             return View(cart);
@@ -441,9 +541,9 @@ namespace Uni_Shop.Controllers
                     DonXinDT dt = new DonXinDT();
                     dt.MaNguoiDung = (int)HttpContext.Session.GetInt32("maND").Value;
                     db.Update(nd);
-                    db.Add(dt);
+                    db.Add(dt);                  
                     await db.SaveChangesAsync();
-
+                    _notyf.Success("Yêu cầu của bạn đã được gửi thành công");
 
                     return RedirectToAction("index");
                 }
@@ -483,10 +583,11 @@ namespace Uni_Shop.Controllers
                         myfile.CopyTo(file);
                     }
                     nd.Avatar = fii;
-                    nd.MaNguoiDung = (int)HttpContext.Session.GetInt32("maTK").Value;
-                    nd.MaTaiKhoan = (int)HttpContext.Session.GetInt32("maTK").Value;
+                    nd.MaNguoiDung = (int)HttpContext.Session.GetInt32("mand");
+                    nd.MaTaiKhoan = (int)HttpContext.Session.GetInt32("maTK");
                     db.Update(nd);
                     await db.SaveChangesAsync();
+                    _notyf.Success("Tài khoản cập nhật thành công");
                     return RedirectToAction("index");
                 }
                 catch (Exception)
@@ -514,7 +615,7 @@ namespace Uni_Shop.Controllers
         [Route("/error404")]
         public IActionResult ExceptionError(string message)
         {
-            int donxin = (from s in db.DonXinDTs where s.MaNguoiDung == (int)HttpContext.Session.GetInt32("maND").Value select s.MaNguoiDung).FirstOrDefault();
+            int donxin = (int)(from s in db.DonXinDTs where s.MaNguoiDung == (int)HttpContext.Session.GetInt32("maND").Value select s.MaNguoiDung).FirstOrDefault();
             if (donxin == (int)HttpContext.Session.GetInt32("maND"))
             {
                 ViewBag.Message = "Đơn xin đối tác của bạn đang được xét duyệt.";
@@ -533,11 +634,27 @@ namespace Uni_Shop.Controllers
         {
             return View();
         }
-
+        //Dang nhap bang facebook
+        public async Task SigninFacebook()
+        {
+            await HttpContext.ChallengeAsync(FacebookDefaults.AuthenticationScheme, new AuthenticationProperties()
+            {
+                RedirectUri = Url.Action("Index")
+            });
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        //Dang nhap bang google
+        public async Task Signin()
+        {
+            await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, new AuthenticationProperties()
+            {
+
+                RedirectUri = Url.Action("Index")
+            });
         }
     }
 }

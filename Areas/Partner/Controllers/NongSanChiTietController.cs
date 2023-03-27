@@ -12,7 +12,7 @@ namespace Uni_Shop.Areas.Partner.Controllers
     [Area("Partner")]
     public class NongSanChiTietController : Controller
     {
-        TN230Context db = new TN230Context();
+        TN230_V1Context db = new TN230_V1Context();
 
         public IActionResult Index()
         {
@@ -30,12 +30,12 @@ namespace Uni_Shop.Areas.Partner.Controllers
         {
             ViewBag.temp3 = new SelectList(db.GianHangs.ToList(), "MaGianHang", "TenGianHang", selecttemp3);
         }
-        public IActionResult NongSanChiTietDoiTac1(int id)
+        public IActionResult NongSanChiTietDoiTac1(int mans)
         {
             temp1();
             temp2();
             temp3();
-            return View(db.NongSans.Find(id));
+            return View(db.NongSans.Find(mans));
         }
     }
 }

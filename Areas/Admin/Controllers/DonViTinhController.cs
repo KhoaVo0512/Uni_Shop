@@ -16,11 +16,11 @@ namespace Uni_Shop.Areas.Admin.Controllers
     public class DonViTinhController : Controller
     {
 
-        TN230Context db = new TN230Context();
+        TN230_V1Context db = new TN230_V1Context();
 
         public IActionResult Index(int pg = 1)
         {
-            int session = (int)HttpContext.Session.GetInt32("taikhoan");
+            var session = HttpContext.Session.GetInt32("taikhoan");
             var kh = (from s in db.NhanViens where s.MaTaiKhoan == session select s.Avatar).Single();
             TempData["data"] = kh;
             List<DonViTinh> donViTinhs = db.DonViTinhs.ToList();
